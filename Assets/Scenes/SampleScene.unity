@@ -234,8 +234,9 @@ GameObject:
   m_Component:
   - component: {fileID: 267030506}
   - component: {fileID: 267030508}
-  - component: {fileID: 267030507}
   - component: {fileID: 267030509}
+  - component: {fileID: 267030511}
+  - component: {fileID: 267030510}
   m_Layer: 0
   m_Name: ApplicationManager
   m_TagString: Untagged
@@ -258,20 +259,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &267030507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267030505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  redirect_url: 
-  client_id: 9830ce611cad40ab98aaca36e75c0b79
 --- !u!114 &267030508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +283,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02deab8b0013254783fa7f9b69f8214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &267030510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267030505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4eeb2bc3725ae6429a8b10904105895, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DebugAccessQueryString: 
+--- !u!114 &267030511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267030505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf37e00144735b4ab89c9faf9430050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redirect_url: 
+  client_id: 9830ce611cad40ab98aaca36e75c0b79
 --- !u!1 &351507098
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,8 +394,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030507}
-        m_TargetAssemblyTypeName: LoginPrompt, Assembly-CSharp
+      - m_Target: {fileID: 267030511}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
         m_MethodName: OpenLoginPrompt
         m_Mode: 1
         m_Arguments:

@@ -1,6 +1,3 @@
-using Assets;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LoginManager : MonoBehaviour
@@ -11,7 +8,6 @@ public class LoginManager : MonoBehaviour
     void Start()
     {
 #if UNITY_EDITOR
-        Debug.Log($"REDIRECT URL: {redirect_url}");
         redirect_url = "http://localhost:8000/callback";
 #else 
         redirect_url = "minify://";
@@ -21,11 +17,5 @@ public class LoginManager : MonoBehaviour
     public void OpenLoginPrompt()
     {
         Application.OpenURL($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=token&redirect_uri={redirect_url}&scope=user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-playback-position");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

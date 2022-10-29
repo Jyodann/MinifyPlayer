@@ -5,7 +5,6 @@ public class DeepLinkManager : MonoBehaviour
 {
     public static DeepLinkManager Instance { get; private set; }
     private string deeplinkURL;
-    public AuthToken AuthToken { get; private set; }
     
     private void Awake()
     {
@@ -28,6 +27,6 @@ public class DeepLinkManager : MonoBehaviour
 
     private void onDeepLinkActivated(string url)
     {
-        AuthToken = new AuthToken(url);
+        MainManager.Instance.AuthToken = new AuthToken(url);
     }
 }
