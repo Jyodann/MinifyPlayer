@@ -787,7 +787,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 00dd455b690ada01
+  metroCertificateNotAfter: 802b0e557e0ada01
   metroApplicationDescription: 2D_BuiltInRenderer
   wsaImages: {}
   metroTileShortName: MinifyPlayer

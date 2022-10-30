@@ -171,10 +171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 300, y: 300}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -295,7 +295,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4eeb2bc3725ae6429a8b10904105895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugAccessQueryString: 
+  DebugAccessQueryString: minify:///#access_token=BQBpHSjhA2fbflYDFzLOnhbPWCh7U4238tJmzlakuIFqeeqz32iHgNBdgxgZbBKL-o4jVVaDfg6cBM7fHjSeSy68WmLDCqgbQJOSbSenCcGlcscj5fJWVY_undZnka4E5dYHD9qmW1MU-4ONm2X3GOq2bEHebDP6CgU0jQeaS0miGzSpVNMape-IdIX_CBA&token_type=Bearer&expires_in=3600
+  isLoggedIn: 0
 --- !u!114 &267030511
 MonoBehaviour:
   m_ObjectHideFlags: 0
