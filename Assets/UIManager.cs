@@ -4,15 +4,52 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] GameObject[] UIs;
+    public enum UI 
     {
-        
+        Login,
+        Main
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        foreach (var UI in UIs)
+        {
+            UI.SetActive(false);
+        }
+    }
+
+    public void ShowUI(UI selectedUI)
+    {
+        string uiString;
+        switch (selectedUI)
+        {
+            case UI.Login:
+                uiString = "LoginUI";
+                break;
+            case UI.Main:
+                uiString = "MainUI";
+                break;
+            default:
+                uiString = "None";
+                break;
+        }
+
+        ShowUI(uiString);
+    }
+
+    private void ShowUI(string name)
+    {
+        GameObject selectedUI = null;
+        foreach (var item in UIs)
+        {
+            if (item.name == name) selectedUI = item;
+            item.SetActive(false);
+        }
+        if (selectedUI == null) {
+            Debug.LogError($"UI of {name} not found");
+            return;
+        }
+        selectedUI.SetActive(true);
     }
 }

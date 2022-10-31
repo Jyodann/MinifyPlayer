@@ -2,10 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LoginManager : MonoBehaviour
-{
-    [SerializeField] 
-    private Button LoginButton;
-    
+{    
     private string redirect_url; 
     public string client_id = "9830ce611cad40ab98aaca36e75c0b79";
     

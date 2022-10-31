@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using Assets.ApplicationStates;
 
 public class MainManager : MonoBehaviour
 {
@@ -12,9 +13,17 @@ public class MainManager : MonoBehaviour
     public AuthToken AuthToken { get; set; }
     public bool isLoggedIn = false;
     private bool attemptingLogin = false;
-    private LoginManager loginManager;
 
-    private StateMachine ApplicationState;
+    #region Managers
+    public LoginManager LoginManager;
+    public UIManager UIManager;
+    #endregion
+
+    #region StateMachine
+    private StateMachine<MainManager> ApplicationState;
+    private LoginState LoginState;
+    #endregion
+
     private void Awake()
     {
         if (Instance == null)
@@ -30,7 +39,8 @@ public class MainManager : MonoBehaviour
     
     void Start()
     {
-        loginManager = GetComponent<LoginManager>();
+        LoginManager = GetComponent<LoginManager>();
+        UIManager = GetComponent<UIManager>();
         AuthToken = new AuthToken();
 
         #if UNITY_EDITOR
@@ -40,12 +50,15 @@ public class MainManager : MonoBehaviour
         }
         #endif
 
-        ApplicationState = new StateMachine();  
+        ApplicationState = new StateMachine<MainManager>();  
+        LoginState = new LoginState(ApplicationState, this);
+        ApplicationState.Initialise(LoginState);
     }
 
     // Update is called once per frame
     void Update()
     {
+        ApplicationState.UpdateState();
         if (!AuthToken.IsActvated) return;
 
         if (!attemptingLogin)
@@ -81,21 +94,17 @@ public class MainManager : MonoBehaviour
                 case UnityWebRequest.Result.Success:
                     var state = JsonConvert.DeserializeObject<PlaybackState>(webRequest.downloadHandler.text);
 
-                    UpdatePlaybackState(state);
+                    
                     break;
                 case UnityWebRequest.Result.ConnectionError:
                     Debug.LogError("Connection Error");
                     break;
 
                 default:
-                    loginManager.OpenLoginPrompt();
+                    LoginManager.OpenLoginPrompt();
                     break;
             }
         }
     }
 
-    void UpdatePlaybackState(PlaybackState playbackState)
-    {
-        LoginUI.SetActive(false);
-    }
 }

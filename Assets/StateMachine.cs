@@ -7,16 +7,16 @@ using UnityEngine;
 
 namespace Assets
 {
-    public class StateMachine : MonoBehaviour
+    public class StateMachine<T>
     {
-        public State CurrentState = null;
-        public void Initialise(State startingState)
+        private State<T> CurrentState = null;
+        public void Initialise(State<T> startingState)
         {
             CurrentState = startingState;
             CurrentState.Enter();
         }
 
-        public void ChangeState(State newState)
+        public void ChangeState(State<T> newState)
         {
             CurrentState.Exit();
 
@@ -25,7 +25,7 @@ namespace Assets
             CurrentState.Enter();
         }
 
-        private void Update()
+        public void UpdateState()
         {
             CurrentState?.Update();
         }

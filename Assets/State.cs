@@ -2,12 +2,14 @@
 
 namespace Assets
 {
-    public abstract class State
+    public abstract class State<T>
     {
-        protected StateMachine StateMachine;
-        protected State(StateMachine SM)
+        protected T Manager;
+        protected StateMachine<T> StateMachine;
+        protected State(StateMachine<T> SM, T manager)
         {
             StateMachine = SM;
+            Manager = manager;
         }
 
         public abstract void Enter();

@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace Assets.ApplicationStates
 {
-    public class LoginState : State
+    public class LoginState : State<MainManager>
     {
-        public LoginState(StateMachine SM) : base(SM)
+        public LoginState(StateMachine<MainManager> SM, MainManager manager) : base(SM, manager)
         {
+            
         }
 
         public override void Enter()
         {
-            
+            Manager.UIManager.ShowUI(UIManager.UI.Login);
         }
 
         public override void Exit()
