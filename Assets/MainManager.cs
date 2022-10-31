@@ -7,12 +7,9 @@ using Assets.ApplicationStates;
 
 public class MainManager : MonoBehaviour
 {
-    [SerializeField] GameObject LoginUI;
     [SerializeField] string DebugAccessQueryString;
     public static MainManager Instance { get; private set; }
-    public AuthToken AuthToken { get; set; }
-    public bool isLoggedIn = false;
-    private bool attemptingLogin = false;
+    public AuthToken AuthToken;
 
     #region Managers
     public LoginManager LoginManager;
@@ -21,7 +18,8 @@ public class MainManager : MonoBehaviour
 
     #region StateMachine
     private StateMachine<MainManager> ApplicationState;
-    private LoginState LoginState;
+    public LoginState LoginState;
+    public ConnectionErrorState ConnectionErrorState;
     #endregion
 
     private void Awake()
@@ -52,6 +50,7 @@ public class MainManager : MonoBehaviour
 
         ApplicationState = new StateMachine<MainManager>();  
         LoginState = new LoginState(ApplicationState, this);
+        ConnectionErrorState = new ConnectionErrorState(ApplicationState, this);
         ApplicationState.Initialise(LoginState);
     }
 
@@ -59,16 +58,9 @@ public class MainManager : MonoBehaviour
     void Update()
     {
         ApplicationState.UpdateState();
-        if (!AuthToken.IsActvated) return;
-
-        if (!attemptingLogin)
-        {
-            attemptingLogin = true;
-            StartCoroutine(RefreshPlayState());
-        }
     }
 
-    private UnityWebRequest GetUnityWebRequestObject(string url, RequestMethods request)
+    public UnityWebRequest GetUnityWebRequestObject(string url, RequestMethods request)
     {
         var webRequest = new UnityWebRequest(url, request.ToString(), new DownloadHandlerBuffer(), null);
         webRequest.SetRequestHeader("Authorization", $"Bearer {AuthToken.access_token}");
@@ -76,7 +68,7 @@ public class MainManager : MonoBehaviour
         return webRequest;
     }
 
-    internal enum RequestMethods
+    public enum RequestMethods
     {
         GET,
         POST,

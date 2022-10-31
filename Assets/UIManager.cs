@@ -8,7 +8,8 @@ public class UIManager : MonoBehaviour
     public enum UI 
     {
         Login,
-        Main
+        Main,
+        ConnectionError
     }
 
     private void Start()
@@ -29,6 +30,9 @@ public class UIManager : MonoBehaviour
                 break;
             case UI.Main:
                 uiString = "MainUI";
+                break;
+            case UI.ConnectionError:
+                uiString = "NetworkUnreachableUI";
                 break;
             default:
                 uiString = "None";

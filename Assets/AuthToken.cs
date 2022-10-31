@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 namespace Assets
 {
-    
-
     sealed public class AuthToken
     {
         public string raw_url { get; private set; }
