@@ -1,19 +1,20 @@
 using Assets;
 using System.Collections;
-using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
-using System.Net;
 
 public class MainManager : MonoBehaviour
 {
+    [SerializeField] GameObject LoginUI;
     [SerializeField] string DebugAccessQueryString;
     public static MainManager Instance { get; private set; }
     public AuthToken AuthToken { get; set; }
     public bool isLoggedIn = false;
     private bool attemptingLogin = false;
     private LoginManager loginManager;
+
+    private StateMachine ApplicationState;
     private void Awake()
     {
         if (Instance == null)
@@ -38,6 +39,8 @@ public class MainManager : MonoBehaviour
             AuthToken = new AuthToken(DebugAccessQueryString);
         }
         #endif
+
+        ApplicationState = new StateMachine();  
     }
 
     // Update is called once per frame
@@ -48,7 +51,7 @@ public class MainManager : MonoBehaviour
         if (!attemptingLogin)
         {
             attemptingLogin = true;
-            //StartCoroutine(GetCurrentUserProfile());
+            StartCoroutine(RefreshPlayState());
         }
     }
 
@@ -67,7 +70,7 @@ public class MainManager : MonoBehaviour
         PUT,
     }
 
-
+   
     IEnumerator RefreshPlayState()
     {
         using (var webRequest = GetUnityWebRequestObject("https://api.spotify.com/v1/me/player", RequestMethods.GET))
@@ -77,6 +80,8 @@ public class MainManager : MonoBehaviour
             {
                 case UnityWebRequest.Result.Success:
                     var state = JsonConvert.DeserializeObject<PlaybackState>(webRequest.downloadHandler.text);
+
+                    UpdatePlaybackState(state);
                     break;
                 case UnityWebRequest.Result.ConnectionError:
                     Debug.LogError("Connection Error");
@@ -89,5 +94,8 @@ public class MainManager : MonoBehaviour
         }
     }
 
-    
+    void UpdatePlaybackState(PlaybackState playbackState)
+    {
+        LoginUI.SetActive(false);
+    }
 }

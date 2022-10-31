@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class DeepLinkManager : MonoBehaviour
 {
+    /// <summary>
+    /// This class handles the capturing of Client_ID from the deeplink
+    /// minify://
+    /// </summary>
     public static DeepLinkManager Instance { get; private set; }
     private void Awake()
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SetResolution : MonoBehaviour
+public class ResolutionManager : MonoBehaviour
 {
     void Start()
     {
