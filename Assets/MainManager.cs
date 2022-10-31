@@ -20,6 +20,7 @@ public class MainManager : MonoBehaviour
     private StateMachine<MainManager> ApplicationState;
     public LoginState LoginState;
     public ConnectionErrorState ConnectionErrorState;
+    public MainState MainState;
     #endregion
 
     private void Awake()
@@ -51,6 +52,8 @@ public class MainManager : MonoBehaviour
         ApplicationState = new StateMachine<MainManager>();  
         LoginState = new LoginState(ApplicationState, this);
         ConnectionErrorState = new ConnectionErrorState(ApplicationState, this);
+
+        MainState = new MainState(ApplicationState, this);
         ApplicationState.Initialise(LoginState);
     }
 

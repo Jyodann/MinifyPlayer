@@ -14,10 +14,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var UI in UIs)
-        {
-            UI.SetActive(false);
-        }
+       
     }
 
     public void ShowUI(UI selectedUI)

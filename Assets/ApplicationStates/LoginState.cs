@@ -15,6 +15,7 @@ namespace Assets.ApplicationStates
 
         public override void Enter()
         {
+            isAttemptingLogin = false;
             Manager.UIManager.ShowUI(UIManager.UI.Login);
         }
 
@@ -45,6 +46,8 @@ namespace Assets.ApplicationStates
                 {
                     StateMachine.ChangeState(Manager.ConnectionErrorState);
                 }
+
+                StateMachine.ChangeState(Manager.MainState);
             } 
         }
     }
