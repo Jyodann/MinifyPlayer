@@ -4,8 +4,6 @@ using UnityEngine;
 public class DeepLinkManager : MonoBehaviour
 {
     public static DeepLinkManager Instance { get; private set; }
-    private string deeplinkURL;
-    
     private void Awake()
     {
         if (Instance == null)

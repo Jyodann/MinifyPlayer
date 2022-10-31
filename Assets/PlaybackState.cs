@@ -49,7 +49,7 @@ namespace Assets
             public Artist24[] artists { get; set; }
             public string[] available_markets { get; set; }
             public int disc_number { get; set; }
-            public int duration_ms { get; set; }
+            public long duration_ms { get; set; }
             public bool _explicit { get; set; }
             public External_Ids external_ids { get; set; }
             public External_Urls3 external_urls { get; set; }

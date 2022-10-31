@@ -1,9 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LoginManager : MonoBehaviour
 {
-    public string redirect_url; 
-    public string client_id = "9830ce611cad40ab98aaca36e75c0b79"; 
+    [SerializeField] 
+    private Button LoginButton;
+    
+    private string redirect_url; 
+    public string client_id = "9830ce611cad40ab98aaca36e75c0b79";
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -18,4 +23,6 @@ public class LoginManager : MonoBehaviour
     {
         Application.OpenURL($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=token&redirect_uri={redirect_url}&scope=user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-playback-position");
     }
+
+    
 }

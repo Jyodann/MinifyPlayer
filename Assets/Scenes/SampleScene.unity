@@ -174,7 +174,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 300, y: 300}
+  m_ReferenceResolution: {x: 500, y: 500}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -309,7 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf37e00144735b4ab89c9faf9430050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  redirect_url: 
+  LoginButton: {fileID: 351507100}
   client_id: 9830ce611cad40ab98aaca36e75c0b79
 --- !u!1 &351507098
 GameObject:
