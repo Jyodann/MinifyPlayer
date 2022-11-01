@@ -1,20 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI SongNameText;
+    [SerializeField] RawImage SongAlbumArt;
+    
     [SerializeField] GameObject[] UIs;
+
     public enum UI 
     {
         Login,
         Main,
         ConnectionError
-    }
-
-    private void Start()
-    {
-       
     }
 
     public void ShowUI(UI selectedUI)
@@ -52,5 +53,25 @@ public class UIManager : MonoBehaviour
             return;
         }
         selectedUI.SetActive(true);
+    }
+
+    public void SetSongName(string name) => SongNameText.text = name;
+
+    public void SetAlbumArtURL(string url)
+    {
+        StartCoroutine(GetRemoteTexture(url));
+    }
+
+    IEnumerator GetRemoteTexture(string uri)
+    {
+        using (var request = UnityWebRequestTexture.GetTexture(uri))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                SongAlbumArt.texture = DownloadHandlerTexture.GetContent(request);
+            }
+        }
     }
 }

@@ -787,7 +787,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 802b0e557e0ada01
+  metroCertificateNotAfter: 00ddd4f7fe0cda01
   metroApplicationDescription: 2D_BuiltInRenderer
   wsaImages: {}
   metroTileShortName: MinifyPlayer
@@ -802,8 +802,12 @@ PlayerSettings:
   metroTileBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21568628, a: 0}
   metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628, a: 1}
   metroSplashScreenUseBackgroundColor: 0
-  platformCapabilities: {}
-  metroTargetDeviceFamilies: {}
+  platformCapabilities:
+    WindowsStoreApps:
+      InternetClient: True
+      InternetClientServer: True
+  metroTargetDeviceFamilies:
+    Desktop: True
   metroFTAName: 
   metroFTAFileTypes: []
   metroProtocolName: minify

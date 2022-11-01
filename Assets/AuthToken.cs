@@ -8,7 +8,6 @@ namespace Assets
         public string token_type { get => tokenInfo["token_type"]; }
         public int expires_in { get => int.Parse(tokenInfo["expires_in"]); }
 
-
         private Dictionary<string, string> tokenInfo = new Dictionary<string, string>();
         public AuthToken(string deepLinkUrl)
         {
@@ -37,6 +36,4 @@ namespace Assets
             return $"Access_Token: {access_token}; TokenType: {token_type}; ExpiresIn: {expires_in}";
         }
     }
-
-
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets
 {
-    internal class PlaybackState
+    sealed public class PlaybackState
     {
         public Device device { get; set; }
         public string repeat_state { get; set; }

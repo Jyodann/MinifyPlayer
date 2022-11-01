@@ -7,7 +7,7 @@ public class MainManager : MonoBehaviour
 {
     [SerializeField] string DebugAccessQueryString;
     public static MainManager Instance { get; private set; }
-    public AuthToken AuthToken;
+   
 
     #region Managers
     public LoginManager LoginManager;
@@ -15,7 +15,7 @@ public class MainManager : MonoBehaviour
     #endregion
 
     #region StateMachine
-    private StateMachine<MainManager> ApplicationState;
+    public StateMachine<MainManager> ApplicationState;
     public LoginState LoginState;
     public ConnectionErrorState ConnectionErrorState;
     public MainState MainState;
@@ -38,14 +38,7 @@ public class MainManager : MonoBehaviour
     {
         LoginManager = GetComponent<LoginManager>();
         UIManager = GetComponent<UIManager>();
-        AuthToken = new AuthToken();
 
-        #if UNITY_EDITOR
-        if (DebugAccessQueryString != string.Empty)
-        {
-            AuthToken = new AuthToken(DebugAccessQueryString);
-        }
-        #endif
 
         ApplicationState = new StateMachine<MainManager>();  
         LoginState = new LoginState(ApplicationState, this);
@@ -64,7 +57,7 @@ public class MainManager : MonoBehaviour
     public UnityWebRequest GetUnityWebRequestObject(string url, RequestMethods request)
     {
         var webRequest = new UnityWebRequest(url, request.ToString(), new DownloadHandlerBuffer(), null);
-        webRequest.SetRequestHeader("Authorization", $"Bearer {AuthToken.access_token}");
+        webRequest.SetRequestHeader("Authorization", $"Bearer {LoginManager.AuthToken.access_token}");
         webRequest.SetRequestHeader("Content-Type", "application/json");
         return webRequest;
     }

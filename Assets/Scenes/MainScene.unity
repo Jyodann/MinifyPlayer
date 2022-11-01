@@ -240,7 +240,6 @@ GameObject:
   - component: {fileID: 267030511}
   - component: {fileID: 267030510}
   - component: {fileID: 267030512}
-  - component: {fileID: 267030513}
   m_Layer: 0
   m_Name: ApplicationManager
   m_TagString: Untagged
@@ -314,7 +313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf37e00144735b4ab89c9faf9430050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAuthorized: 0
   client_id: 9830ce611cad40ab98aaca36e75c0b79
 --- !u!114 &267030512
 MonoBehaviour:
@@ -328,22 +326,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ced95dac16187488740a0c220a582b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SongNameText: {fileID: 1178109206}
+  SongAlbumArt: {fileID: 720887567}
   UIs:
   - {fileID: 1955049272}
   - {fileID: 829392224}
   - {fileID: 988217769}
---- !u!114 &267030513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267030505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e967bc08e1a5b44085876da13180727, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &351507098
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +845,7 @@ GameObject:
   - component: {fileID: 1178109207}
   - component: {fileID: 1178109206}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: SongName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
