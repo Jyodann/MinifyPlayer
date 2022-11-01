@@ -1,8 +1,6 @@
 using Assets;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft.Json;
 using Assets.ApplicationStates;
 
 public class MainManager : MonoBehaviour
@@ -76,30 +74,6 @@ public class MainManager : MonoBehaviour
         GET,
         POST,
         PUT,
-    }
-
-   
-    IEnumerator RefreshPlayState()
-    {
-        using (var webRequest = GetUnityWebRequestObject("https://api.spotify.com/v1/me/player", RequestMethods.GET))
-        {
-            yield return webRequest.SendWebRequest();
-            switch (webRequest.result)
-            {
-                case UnityWebRequest.Result.Success:
-                    var state = JsonConvert.DeserializeObject<PlaybackState>(webRequest.downloadHandler.text);
-
-                    
-                    break;
-                case UnityWebRequest.Result.ConnectionError:
-                    Debug.LogError("Connection Error");
-                    break;
-
-                default:
-                    LoginManager.OpenLoginPrompt();
-                    break;
-            }
-        }
     }
 
 }

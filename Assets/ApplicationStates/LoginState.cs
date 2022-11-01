@@ -8,6 +8,8 @@ namespace Assets.ApplicationStates
     {
         private bool isLoggedIn = false;
         private bool isAttemptingLogin = false;
+
+
         public LoginState(StateMachine<MainManager> SM, MainManager manager) : base(SM, manager)
         {
             
@@ -27,7 +29,7 @@ namespace Assets.ApplicationStates
         public override void Update()
         {
             // Detect for Login:
-            if (!Manager.AuthToken.IsActvated) return;
+            if (!Manager.LoginManager.isAuthorized) return;
 
             if (!isAttemptingLogin)
             {

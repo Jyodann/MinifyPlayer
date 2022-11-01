@@ -13,11 +13,11 @@ public class DeepLinkManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            Application.deepLinkActivated += onDeepLinkActivated;
+            Application.deepLinkActivated += OnDeepLinkActivated;
             if (!string.IsNullOrEmpty(Application.absoluteURL))
             {
                 // Cold start and Application.absoluteURL not null so process Deep Link.
-                onDeepLinkActivated(Application.absoluteURL);
+                OnDeepLinkActivated(Application.absoluteURL);
             }
             DontDestroyOnLoad(gameObject);
         }
@@ -27,7 +27,7 @@ public class DeepLinkManager : MonoBehaviour
         }
     }
 
-    private void onDeepLinkActivated(string url)
+    private void OnDeepLinkActivated(string url)
     {
         MainManager.Instance.AuthToken = new AuthToken(url);
     }

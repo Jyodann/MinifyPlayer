@@ -8,7 +8,6 @@ namespace Assets
         public string token_type { get => tokenInfo["token_type"]; }
         public int expires_in { get => int.Parse(tokenInfo["expires_in"]); }
 
-        public bool IsActvated { get => !string.IsNullOrEmpty(raw_url);  }
 
         private Dictionary<string, string> tokenInfo = new Dictionary<string, string>();
         public AuthToken(string deepLinkUrl)
