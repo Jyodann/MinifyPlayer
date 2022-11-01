@@ -5,6 +5,8 @@ using UnityEngine.Networking;
 
 public class LoginManager : MonoBehaviour
 {
+    [SerializeField] string DebugString;
+
     public AuthToken AuthToken;
     public bool isAuthorized { get; private set; }
     public bool isTokenExpired = false;
@@ -17,8 +19,25 @@ public class LoginManager : MonoBehaviour
         AuthToken = new AuthToken();
 #if UNITY_EDITOR
         redirect_url = "http://localhost:8000/callback";
+
+        if (DebugString != string.Empty)
+        {
+            AuthToken = new AuthToken(DebugString);
+            AttemptAuthorization();
+        }
 #else 
         redirect_url = "minify://";
+#endif
+    }
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            print("Force Refresh");
+            InformTokenExpiry();
+        }
 #endif
     }
 

@@ -13,6 +13,7 @@ namespace Assets
         {
             raw_url = deepLinkUrl;
             deepLinkUrl = deepLinkUrl.Replace("minify:///#", string.Empty);
+            deepLinkUrl = deepLinkUrl.Replace("http://localhost:8000/callback#", string.Empty);
 
             var parameters = deepLinkUrl.Split('&');
 

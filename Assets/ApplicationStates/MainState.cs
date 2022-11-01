@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections;
 using UnityEngine.Networking;
-
+using UnityEngine;
 namespace Assets.ApplicationStates
 {
     public class MainState : State<MainManager>
@@ -36,6 +36,8 @@ namespace Assets.ApplicationStates
         {
             using (var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/player", MainManager.RequestMethods.GET))
             {
+                yield return request.SendWebRequest(); 
+
                 if (request.result == UnityWebRequest.Result.ConnectionError)
                 {
                     MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.ConnectionErrorState);
@@ -44,34 +46,48 @@ namespace Assets.ApplicationStates
 
                 if (request.result == UnityWebRequest.Result.Success)
                 {
-                    var playBackState = JsonConvert.DeserializeObject<PlaybackState>(request.downloadHandler.text);
-                    var UIManager = MainManager.Instance.UIManager;
-                   
-                    var song_name = playBackState.item.name;
-                    var album_art = playBackState.item.album.images[0].url;
-
-                    // If no playback State, set one:
-                    if (CurrentPlaybackState == null)
+                    try
                     {
+                        var playBackState = JsonConvert.DeserializeObject<PlaybackState>(request.downloadHandler.text);
+
+                        if (playBackState.currently_playing_type == "unknown")
+                        {
+                            AttemptUpdatePlaybackState();
+                            yield break;
+                        }
+                        var UIManager = MainManager.Instance.UIManager;
+
+                        var song_name = playBackState.item.name;
+                        var album_art = playBackState.item.album.images[0].url;
+
+                        // If no playback State, set one:
+                        if (CurrentPlaybackState == null)
+                        {
+                            CurrentPlaybackState = playBackState;
+                            UIManager.SetSongName(song_name);
+                            UIManager.SetAlbumArtURL(album_art);
+                        }
+
+                        if (CurrentPlaybackState.item.name != song_name)
+                        {
+                            UIManager.SetSongName(song_name);
+                        }
+
+                        if (CurrentPlaybackState.item.album.images[0].url != album_art)
+                        {
+                            UIManager.SetAlbumArtURL(album_art);
+                        }
+
                         CurrentPlaybackState = playBackState;
-                        UIManager.SetSongName(song_name);
-                        UIManager.SetAlbumArtURL(album_art);
-                        yield break;
-                    }
 
-                    if (CurrentPlaybackState.item.name != song_name)
+                        AttemptUpdatePlaybackState();
+                    }
+                    catch (System.Exception e)
                     {
-                        UIManager.SetSongName(song_name);
+                        Debug.LogException(e);
+                        AttemptUpdatePlaybackState();
                     }
-
-                    if (CurrentPlaybackState.item.album.images[0].url != album_art)
-                    {
-                        UIManager.SetSongName(album_art);
-                    }
-
-                    CurrentPlaybackState = playBackState;
-
-                    AttemptUpdatePlaybackState();
+                    
                     yield break;
                 }
 

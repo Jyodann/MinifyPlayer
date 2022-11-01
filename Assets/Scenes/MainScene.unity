@@ -174,7 +174,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 500, y: 500}
+  m_ReferenceResolution: {x: 300, y: 350}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -313,6 +313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf37e00144735b4ab89c9faf9430050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugString: http://localhost:8000/callback#access_token=BQCbweMc4zfOZH3aBMd3ctNtMC6JJnpqTN7QfOBgNMygYxy0DHT4Qgzh2GWs9yaHFUJafg3ukaE-4YvP9Zlcjk_jkkBrcHAdplvgaM284uW0VcK8sxnS8PJl9ia3gvAd76o_04mTlUiQbtbV4bzGZ8KNfrxBWvMm6Tb-yWLCYN3EOhIppXFBU6sUmjVw6vE&token_type=Bearer&expires_in=3600
+  isTokenExpired: 0
   client_id: 9830ce611cad40ab98aaca36e75c0b79
 --- !u!114 &267030512
 MonoBehaviour:
@@ -585,8 +587,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 400}
+  m_AnchoredPosition: {x: 0, y: 25}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &720887567
 MonoBehaviour:
@@ -866,11 +868,11 @@ RectTransform:
   m_Father: {fileID: 829392225}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
-  m_Pivot: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 12.5}
+  m_SizeDelta: {x: 0, y: 25}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1178109206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -891,7 +893,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Current Song Playing
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -918,7 +920,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.75
+  m_fontSize: 22.35
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
