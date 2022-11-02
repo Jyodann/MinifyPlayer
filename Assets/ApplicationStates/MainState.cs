@@ -2,11 +2,15 @@
 using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
+using Assets.JsonModels;
+using static UnityEngine.ParticleSystem;
+
 namespace Assets.ApplicationStates
 {
     public class MainState : State<MainManager>
     {
-        private PlaybackState CurrentPlaybackState = null;
+        private PlaybackState CurrentPlaybackState = new PlaybackState();
+        private PlaybackState PreviousPlaybackState = new PlaybackState();
         public MainState(StateMachine<MainManager> SM, MainManager manager) : base(SM, manager)
         {
         }
@@ -34,10 +38,11 @@ namespace Assets.ApplicationStates
 
         IEnumerator UpdatePlaybackState()
         {
-            using (var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/player", MainManager.RequestMethods.GET))
+            yield return new WaitForSeconds(1f);
+            using (var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/player?additional_types=episode,track", MainManager.RequestMethods.GET))
             {
-                yield return request.SendWebRequest(); 
-
+                yield return request.SendWebRequest();
+                Debug.Log(request.downloadHandler.text);
                 if (request.result == UnityWebRequest.Result.ConnectionError)
                 {
                     MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.ConnectionErrorState);
@@ -46,39 +51,66 @@ namespace Assets.ApplicationStates
 
                 if (request.result == UnityWebRequest.Result.Success)
                 {
+                    if (request.downloadHandler.text == string.Empty)
+                    {
+                        //Debug.Log("Spotify Instance Disconnected");
+                        AttemptUpdatePlaybackState();
+                        yield break;
+                    }
+
                     try
                     {
-                        var playBackState = JsonConvert.DeserializeObject<PlaybackState>(request.downloadHandler.text);
+                        Debug.Log(request.downloadHandler.text);
+                        //Gets the Current Playing Type
+                        var genericPlaybackState = JsonConvert.DeserializeObject<PlaybackStateGeneric>(
+                        request.downloadHandler.text);
 
-                        if (playBackState.currently_playing_type == "unknown")
+                        switch (genericPlaybackState.currently_playing_type)
                         {
+                            case "unknown":
+                                AttemptUpdatePlaybackState();
+                                yield break;
+                            case "track":
+                                var playBackStateSong = JsonConvert.DeserializeObject<PlaybackStateSong>(request.downloadHandler.text);
+
+                                CurrentPlaybackState.SongName = playBackStateSong.item.name;
+                                CurrentPlaybackState.AlbumArtURL = playBackStateSong.item.album.images[0].url;
+
+                                break;
+                             case "episode":
+                                var playBackStatePodcast = JsonConvert.DeserializeObject<PlaybackStatePodcast>(request.downloadHandler.text);
+
+                                CurrentPlaybackState.SongName = playBackStatePodcast.item.name;
+                                CurrentPlaybackState.AlbumArtURL = playBackStatePodcast.item.images[0].url;
+
+                                break;
+                            default:
+                                Debug.LogError($"Song Type not recognised: {genericPlaybackState.currently_playing_type}");
+                                break;
+                        }
+
+                        var UIManager = MainManager.Instance.UIManager;
+
+                        // If no previous state, set one:
+                        if (PreviousPlaybackState.SongName.Equals(string.Empty))
+                        {
+                            UIManager.SetSongName(CurrentPlaybackState.SongName);
+                            UIManager.SetAlbumArtURL(CurrentPlaybackState.AlbumArtURL);
+
+                            PreviousPlaybackState.CopyPlaybackState(CurrentPlaybackState);
                             AttemptUpdatePlaybackState();
                             yield break;
                         }
-                        var UIManager = MainManager.Instance.UIManager;
 
-                        var song_name = playBackState.item.name;
-                        var album_art = playBackState.item.album.images[0].url;
-
-                        // If no playback State, set one:
-                        if (CurrentPlaybackState == null)
+                        // Check for Song Difference, then change
+                        if (!CurrentPlaybackState.CheckForDifference(PreviousPlaybackState))
                         {
-                            CurrentPlaybackState = playBackState;
-                            UIManager.SetSongName(song_name);
-                            UIManager.SetAlbumArtURL(album_art);
-                        }
+                            Debug.Log("Song Changed");
+                            UIManager.SetSongName(CurrentPlaybackState.SongName);
+                            UIManager.SetAlbumArtURL(CurrentPlaybackState.AlbumArtURL);
 
-                        if (CurrentPlaybackState.item.name != song_name)
-                        {
-                            UIManager.SetSongName(song_name);
+                            PreviousPlaybackState.CopyPlaybackState(CurrentPlaybackState);
                         }
-
-                        if (CurrentPlaybackState.item.album.images[0].url != album_art)
-                        {
-                            UIManager.SetAlbumArtURL(album_art);
-                        }
-
-                        CurrentPlaybackState = playBackState;
 
                         AttemptUpdatePlaybackState();
                     }
