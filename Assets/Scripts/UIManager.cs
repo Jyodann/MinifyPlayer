@@ -8,8 +8,13 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI SongNameText;
     [SerializeField] RawImage SongAlbumArt;
+    [SerializeField] TMP_InputField TokenInputUI;
+    [SerializeField] Button ProceedButton;
     
     [SerializeField] GameObject[] UIs;
+
+    public string TokenInput { get => TokenInputUI.text; }
+
 
     public enum UI 
     {
@@ -61,6 +66,8 @@ public class UIManager : MonoBehaviour
     {
         StartCoroutine(GetRemoteTexture(url));
     }
+
+    public void SetProceedButtonEnabled(bool isEnabled) => ProceedButton.interactable = isEnabled;
 
     IEnumerator GetRemoteTexture(string uri)
     {
