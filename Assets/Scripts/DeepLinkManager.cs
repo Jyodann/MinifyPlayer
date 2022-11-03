@@ -29,7 +29,7 @@ public class DeepLinkManager : MonoBehaviour
 
     private void OnDeepLinkActivated(string url)
     {
-        MainManager.Instance.LoginManager.AuthToken = new AuthToken(url);
+        //MainManager.Instance.LoginManager.AuthToken = new AuthToken(url);
         
         MainManager.Instance.LoginManager.AttemptAuthorization();
     }

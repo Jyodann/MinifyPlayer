@@ -70,6 +70,11 @@ public class LoginManager : MonoBehaviour
             MainManager.Instance.UIManager.SetProceedButtonEnabled(true);
             if (request.result == UnityWebRequest.Result.Success)
             {
+                var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);
+
+                MainManager.Instance.LoginManager.AuthToken = authToken;
+
+                MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
                 yield break;
             }
 
