@@ -18,7 +18,7 @@ public class LoginManager : MonoBehaviour
         // Start with Empty Auth Token:
         AuthToken = new AuthToken();
 #if UNITY_EDITOR
-        redirect_url = "http://localhost:7252/callback";
+        redirect_url = "https://localhost:7252/callback";
 
         if (DebugString != string.Empty)
         {
@@ -38,7 +38,7 @@ public class LoginManager : MonoBehaviour
     // Opens the GET Request for Callback to Application:
     public void OpenLoginPrompt()
     {
-        Application.OpenURL($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=token&redirect_uri={redirect_url}&scope=user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-playback-position");
+        Application.OpenURL($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={redirect_url}&scope=user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-playback-position");
     }
 
     // Attempt Authorization with Current Token:
