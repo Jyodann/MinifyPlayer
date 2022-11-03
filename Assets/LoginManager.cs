@@ -18,7 +18,7 @@ public class LoginManager : MonoBehaviour
         // Start with Empty Auth Token:
         AuthToken = new AuthToken();
 #if UNITY_EDITOR
-        redirect_url = "http://localhost:8000/callback";
+        redirect_url = "http://localhost:7252/callback";
 
         if (DebugString != string.Empty)
         {
@@ -32,13 +32,7 @@ public class LoginManager : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            print("Force Refresh");
-            InformTokenExpiry();
-        }
-#endif
+
     }
 
     // Opens the GET Request for Callback to Application:

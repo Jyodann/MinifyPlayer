@@ -42,7 +42,7 @@ namespace Assets.ApplicationStates
             using (var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/player?additional_types=episode,track", MainManager.RequestMethods.GET))
             {
                 yield return request.SendWebRequest();
-                Debug.Log(request.downloadHandler.text);
+                
                 if (request.result == UnityWebRequest.Result.ConnectionError)
                 {
                     MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.ConnectionErrorState);
@@ -60,7 +60,6 @@ namespace Assets.ApplicationStates
 
                     try
                     {
-                        Debug.Log(request.downloadHandler.text);
                         //Gets the Current Playing Type
                         var genericPlaybackState = JsonConvert.DeserializeObject<PlaybackStateGeneric>(
                         request.downloadHandler.text);
