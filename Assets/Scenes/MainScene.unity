@@ -206,7 +206,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4731896}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 267030511}
+        m_TargetAssemblyTypeName: LoginManager, Assembly-CSharp
+        m_MethodName: GetToken
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4731896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +370,6 @@ GameObject:
   m_Component:
   - component: {fileID: 267030506}
   - component: {fileID: 267030508}
-  - component: {fileID: 267030509}
   - component: {fileID: 267030511}
   - component: {fileID: 267030510}
   - component: {fileID: 267030512}
@@ -397,18 +408,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5d1e01e5b6985c4694b7ec0df683b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &267030509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267030505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f02deab8b0013254783fa7f9b69f8214, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &267030510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,7 +420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4eeb2bc3725ae6429a8b10904105895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugAccessQueryString: minify:///#access_token=BQBpHSjhA2fbflYDFzLOnhbPWCh7U4238tJmzlakuIFqeeqz32iHgNBdgxgZbBKL-o4jVVaDfg6cBM7fHjSeSy68WmLDCqgbQJOSbSenCcGlcscj5fJWVY_undZnka4E5dYHD9qmW1MU-4ONm2X3GOq2bEHebDP6CgU0jQeaS0miGzSpVNMape-IdIX_CBA&token_type=Bearer&expires_in=3600
   LoginManager: {fileID: 0}
   UIManager: {fileID: 0}
 --- !u!114 &267030511
@@ -454,6 +452,7 @@ MonoBehaviour:
   SongNameText: {fileID: 1178109206}
   SongAlbumArt: {fileID: 720887567}
   TokenInputUI: {fileID: 1058226291}
+  ProceedButton: {fileID: 4731895}
   UIs:
   - {fileID: 1955049272}
   - {fileID: 829392224}

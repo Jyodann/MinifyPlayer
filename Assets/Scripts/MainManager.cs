@@ -5,7 +5,7 @@ using Assets.ApplicationStates;
 
 public class MainManager : MonoBehaviour
 {
-    [SerializeField] string DebugAccessQueryString;
+    
     public static MainManager Instance { get; private set; }
    
 

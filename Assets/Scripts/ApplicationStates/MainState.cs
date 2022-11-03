@@ -28,7 +28,11 @@ namespace Assets.ApplicationStates
 
         public override void Update()
         {
-            
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                // Purposely Expire code:
+                MainManager.Instance.LoginManager.RefreshToken();
+            }
         }
 
         void AttemptUpdatePlaybackState()
@@ -124,9 +128,8 @@ namespace Assets.ApplicationStates
 
                 if (request.responseCode == 401)
                 {
-                    MainManager.Instance.LoginManager.InformTokenExpiry();
-                    MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.LoginState);
-
+                    MainManager.Instance.LoginManager.RefreshToken();
+                    AttemptUpdatePlaybackState();
                     yield break;
                 }
             }

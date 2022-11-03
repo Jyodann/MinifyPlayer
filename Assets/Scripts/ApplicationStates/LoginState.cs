@@ -1,4 +1,6 @@
-﻿namespace Assets.ApplicationStates
+﻿using UnityEngine;
+
+namespace Assets.ApplicationStates
 {
     public class LoginState : State<MainManager>
     {
@@ -19,10 +21,11 @@
 
         public override void Update()
         {
-            // Detect for Login:
-            if (!Manager.LoginManager.isAuthorized) return;
-
-            MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                // Purposely Expire code:
+                MainManager.Instance.LoginManager.RefreshToken();
+            }
         }
     }
 }

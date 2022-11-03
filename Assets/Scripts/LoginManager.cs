@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Net;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -19,7 +20,7 @@ public class LoginManager : MonoBehaviour
     private string baseUrl = string.Empty;
     private string redirectUrl { get => $"{baseUrl}/callback"; }
     private string getTokenUrl { get => $"{baseUrl}/getToken"; }
-    private string refreshTokenUrl { get => $"{baseUrl}/refreshtoken"; }
+    private string refreshTokenUrl { get => $"{baseUrl}/refresh_token"; }
 
     public string client_id = "9830ce611cad40ab98aaca36e75c0b79";
     
@@ -52,82 +53,73 @@ public class LoginManager : MonoBehaviour
     IEnumerator GetTokenFromSpotify(string token)
     {
         MainManager.Instance.UIManager.SetProceedButtonEnabled(false);
-        var tokenPayload = JsonConvert.SerializeObject( new TokenPayload()
-        {
-            redirect_url = redirectUrl,
-            code = token,
-        } );
 
-        var tokenBytes = System.Text.Encoding.UTF8.GetBytes(tokenPayload);
-        
-
-        using (var request = new UnityWebRequest(getTokenUrl, "POST"))
+        using (var request = UnityWebRequest.Get($"{getTokenUrl}?code={token}&redirect_url={redirectUrl}"))
         {
-            request.uploadHandler = new UploadHandlerRaw(tokenBytes);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
             yield return request.SendWebRequest();
+
+            print($"{getTokenUrl}?code={token}&redirect_url={redirectUrl}");
+            print(request.downloadHandler.text);
             MainManager.Instance.UIManager.SetProceedButtonEnabled(true);
+
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);
 
+                if (authToken.access_token == null)
+                {
+                    Debug.LogError("Access Token invalid");
+                    yield break;
+                }
+
                 MainManager.Instance.LoginManager.AuthToken = authToken;
 
                 MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
-                yield break;
-            }
 
-            if (request.result == UnityWebRequest.Result.ProtocolError)
-            {
+                print(authToken);
                 yield break;
             }
 
             if (request.result == UnityWebRequest.Result.ConnectionError)
             {
+                //Handle if no internet connection
                 yield break;
             }
         }
     }
 
-    // Attempt Authorization with Current Token:
-    public void AttemptAuthorization()
+    public void RefreshToken()
     {
-        StartCoroutine(VerifyToken());
+        StartCoroutine(GetRefreshToken(AuthToken.refresh_token));
     }
 
-    public void InformTokenExpiry()
+    IEnumerator GetRefreshToken(string token)
     {
-        isAuthorized = false;
-        isTokenExpired = true;
-    }
-    IEnumerator VerifyToken()
-    {
-        using (var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/", MainManager.RequestMethods.GET))
+        using (var request = UnityWebRequest.Get($"{refreshTokenUrl}?refresh_token={token}"))
         {
             yield return request.SendWebRequest();
+            print(request.downloadHandler.text);
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);
 
-            Debug.Log(request.downloadHandler.text);
+                if (authToken.access_token == null)
+                {
+                    Debug.LogError("Access Token invalid");
+                    yield break;
+                }
+
+                print(authToken);
+
+                MainManager.Instance.LoginManager.AuthToken.access_token = authToken.access_token;
+                yield break;
+            }
+
             if (request.result == UnityWebRequest.Result.ConnectionError)
             {
-                MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.ConnectionErrorState);
+                //Handle if no internet connection
                 yield break;
             }
-
-            if (request.responseCode == 200)
-            {
-                isAuthorized = true;
-                isTokenExpired = false;
-                Debug.Log("Managed to verify");
-                yield break;
-            }
-
-            if (request.responseCode == 401)
-            {
-                OpenLoginPrompt();
-                yield break;
-            }
-            
         }
     }
 }
