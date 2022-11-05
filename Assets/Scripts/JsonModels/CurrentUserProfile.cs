@@ -1,6 +1,6 @@
 ﻿namespace Assets
 {
-    internal class CurrentUserProfile
+    public class CurrentUserProfile
     {
         public string country { get; set; }
 

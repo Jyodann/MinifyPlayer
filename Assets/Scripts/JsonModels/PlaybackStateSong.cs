@@ -1,6 +1,6 @@
 ﻿namespace Assets
 {
-    public sealed class PlaybackStateSong
+    public class PlaybackStateSong
     {
         public Device device { get; set; }
 

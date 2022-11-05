@@ -67,7 +67,7 @@ namespace Assets.ApplicationStates
                         //Gets the Current Playing Type
                         var genericPlaybackState = JsonConvert.DeserializeObject<PlaybackStateGeneric>(
                         request.downloadHandler.text);
-
+                        Debug.Log($"Song Type: {genericPlaybackState.currently_playing_type}");
                         switch (genericPlaybackState.currently_playing_type)
                         {
                             case "unknown":

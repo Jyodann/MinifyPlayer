@@ -83,18 +83,15 @@ public class LoginManager : MonoBehaviour
 
     public void RefreshToken(bool refreshLogin)
     {
-        print("Refresh Token");
         StartCoroutine(GetRefreshToken(AuthToken.refresh_token, refreshLogin));
     }
 
     private IEnumerator GetRefreshToken(string token, bool refreshLogin)
     {
-        print($"{refreshTokenUrl}?refresh_token={token}");
         using (var request = UnityWebRequest.Get($"{refreshTokenUrl}?refresh_token={token}"))
         {
             yield return request.SendWebRequest();
 
-            print(request.downloadHandler.text);
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);

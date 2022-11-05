@@ -1,6 +1,6 @@
 ﻿namespace Assets.JsonModels
 {
-    internal class PlaybackStatePodcast
+    public class PlaybackStatePodcast
     {
         public Device device { get; set; }
 
