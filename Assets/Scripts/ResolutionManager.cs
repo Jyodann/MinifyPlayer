@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ResolutionManager : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
         Screen.SetResolution(300, 350, false);
     }

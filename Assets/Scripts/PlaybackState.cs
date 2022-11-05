@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Assets
+﻿namespace Assets
 {
     internal class PlaybackState
     {
         public string SongName { get; set; } = string.Empty;
+
         public string AlbumArtURL { get; set; } = string.Empty;
 
         public PlaybackState()
         {
-
         }
 
         public bool CheckForDifference(PlaybackState otherPlayback)

@@ -6,20 +6,24 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI SongNameText;
-    [SerializeField] RawImage SongAlbumArt;
-    [SerializeField] TMP_InputField TokenInputUI;
-    [SerializeField] Button ProceedButton;
-    
-    [SerializeField] GameObject[] UIs;
+    [SerializeField] private TextMeshProUGUI SongNameText;
+
+    [SerializeField] private RawImage SongAlbumArt;
+
+    [SerializeField] private TMP_InputField TokenInputUI;
+
+    [SerializeField] private Button ProceedButton;
+
+    [SerializeField] private GameObject[] UIs;
 
     public string TokenInput { get => TokenInputUI.text; }
 
-
-    public enum UI 
+    public enum UI
     {
         Login,
+
         Main,
+
         ConnectionError
     }
 
@@ -31,12 +35,15 @@ public class UIManager : MonoBehaviour
             case UI.Login:
                 uiString = "LoginUI";
                 break;
+
             case UI.Main:
                 uiString = "MainUI";
                 break;
+
             case UI.ConnectionError:
                 uiString = "NetworkUnreachableUI";
                 break;
+
             default:
                 uiString = "None";
                 break;
@@ -53,7 +60,8 @@ public class UIManager : MonoBehaviour
             if (item.name == name) selectedUI = item;
             item.SetActive(false);
         }
-        if (selectedUI == null) {
+        if (selectedUI == null)
+        {
             Debug.LogError($"UI of {name} not found");
             return;
         }
@@ -69,7 +77,7 @@ public class UIManager : MonoBehaviour
 
     public void SetProceedButtonEnabled(bool isEnabled) => ProceedButton.interactable = isEnabled;
 
-    IEnumerator GetRemoteTexture(string uri)
+    private IEnumerator GetRemoteTexture(string uri)
     {
         using (var request = UnityWebRequestTexture.GetTexture(uri))
         {

@@ -1,16 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using Assets.JsonModels;
+using Newtonsoft.Json;
 using System.Collections;
-using UnityEngine.Networking;
 using UnityEngine;
-using Assets.JsonModels;
-using static UnityEngine.ParticleSystem;
+using UnityEngine.Networking;
 
 namespace Assets.ApplicationStates
 {
     public class MainState : State<MainManager>
     {
         private PlaybackState CurrentPlaybackState = new PlaybackState();
+
         private PlaybackState PreviousPlaybackState = new PlaybackState();
+
         public MainState(StateMachine<MainManager> SM, MainManager manager) : base(SM, manager)
         {
         }
@@ -23,7 +24,6 @@ namespace Assets.ApplicationStates
 
         public override void Exit()
         {
-            
         }
 
         public override void Update()
@@ -35,18 +35,18 @@ namespace Assets.ApplicationStates
             }
         }
 
-        void AttemptUpdatePlaybackState()
+        private void AttemptUpdatePlaybackState()
         {
             MainManager.Instance.StartCoroutine(UpdatePlaybackState());
         }
 
-        IEnumerator UpdatePlaybackState()
+        private IEnumerator UpdatePlaybackState()
         {
             yield return new WaitForSeconds(1f);
             using (var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/player?additional_types=episode,track", MainManager.RequestMethods.GET))
             {
                 yield return request.SendWebRequest();
-                
+
                 if (request.result == UnityWebRequest.Result.ConnectionError)
                 {
                     MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.ConnectionErrorState);
@@ -80,13 +80,15 @@ namespace Assets.ApplicationStates
                                 CurrentPlaybackState.AlbumArtURL = playBackStateSong.item.album.images[0].url;
 
                                 break;
-                             case "episode":
+
+                            case "episode":
                                 var playBackStatePodcast = JsonConvert.DeserializeObject<PlaybackStatePodcast>(request.downloadHandler.text);
 
                                 CurrentPlaybackState.SongName = playBackStatePodcast.item.name;
                                 CurrentPlaybackState.AlbumArtURL = playBackStatePodcast.item.images[0].url;
 
                                 break;
+
                             default:
                                 Debug.LogError($"Song Type not recognised: {genericPlaybackState.currently_playing_type}");
                                 break;
@@ -122,7 +124,7 @@ namespace Assets.ApplicationStates
                         Debug.LogException(e);
                         AttemptUpdatePlaybackState();
                     }
-                    
+
                     yield break;
                 }
 

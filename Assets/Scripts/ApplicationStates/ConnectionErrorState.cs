@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Assets.ApplicationStates
@@ -11,6 +6,7 @@ namespace Assets.ApplicationStates
     public class ConnectionErrorState : State<MainManager>
     {
         public int TimeToAttempt = 5;
+
         public ConnectionErrorState(StateMachine<MainManager> SM, MainManager manager) : base(SM, manager)
         {
         }
@@ -21,22 +17,20 @@ namespace Assets.ApplicationStates
             ConnectBack();
         }
 
-
-        void ConnectBack()
+        private void ConnectBack()
         {
             Manager.StartCoroutine(AttemptToConnectBack());
         }
+
         public override void Exit()
         {
-            
         }
 
         public override void Update()
         {
-            
         }
 
-        IEnumerator AttemptToConnectBack()
+        private IEnumerator AttemptToConnectBack()
         {
             while (TimeToAttempt > 0)
             {
@@ -63,7 +57,6 @@ namespace Assets.ApplicationStates
                     }
                 }
             }
-            
         }
     }
 }

@@ -7,22 +7,27 @@ using UnityEngine.Networking;
 public class LoginManager : MonoBehaviour
 {
     public AuthToken AuthToken = new AuthToken();
+
     public bool isAuthorized { get; private set; }
+
     public bool isTokenExpired = false;
 
     private string baseUrl = string.Empty;
+
     private string redirectUrl { get => $"{baseUrl}/callback"; }
+
     private string getTokenUrl { get => $"{baseUrl}/gettoken"; }
+
     private string refreshTokenUrl { get => $"{baseUrl}/refreshtoken"; }
 
     public string client_id = "9830ce611cad40ab98aaca36e75c0b79";
-    
-    void Awake()
+
+    private void Awake()
     {
         // Start with Empty Auth Token:
 #if UNITY_EDITOR
         baseUrl = "https://localhost:7252";
-#else 
+#else
         baseUrl = "https://r59741kpgh.execute-api.ap-southeast-1.amazonaws.com/prod";
 #endif
     }
@@ -40,7 +45,7 @@ public class LoginManager : MonoBehaviour
         StartCoroutine(GetTokenFromSpotify(token));
     }
 
-    IEnumerator GetTokenFromSpotify(string token)
+    private IEnumerator GetTokenFromSpotify(string token)
     {
         MainManager.Instance.UIManager.SetProceedButtonEnabled(false);
 
@@ -82,14 +87,14 @@ public class LoginManager : MonoBehaviour
         StartCoroutine(GetRefreshToken(AuthToken.refresh_token, refreshLogin));
     }
 
-    IEnumerator GetRefreshToken(string token, bool refreshLogin)
+    private IEnumerator GetRefreshToken(string token, bool refreshLogin)
     {
         print($"{refreshTokenUrl}?refresh_token={token}");
         using (var request = UnityWebRequest.Get($"{refreshTokenUrl}?refresh_token={token}"))
         {
             yield return request.SendWebRequest();
-            
-            print(request.downloadHandler.text);    
+
+            print(request.downloadHandler.text);
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);

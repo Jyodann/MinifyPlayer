@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-
-namespace Assets
+﻿namespace Assets
 {
     public class StateMachine<T>
     {
         private State<T> CurrentState = null;
+
         public void Initialise(State<T> startingState)
         {
             CurrentState = startingState;

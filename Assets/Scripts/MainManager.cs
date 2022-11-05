@@ -1,25 +1,31 @@
 using Assets;
+using Assets.ApplicationStates;
 using UnityEngine;
 using UnityEngine.Networking;
-using Assets.ApplicationStates;
 
 public class MainManager : MonoBehaviour
 {
-    
     public static MainManager Instance { get; private set; }
-   
 
     #region Managers
+
     public LoginManager LoginManager;
+
     public UIManager UIManager;
-    #endregion
+
+    #endregion Managers
 
     #region StateMachine
+
     public StateMachine<MainManager> ApplicationState;
+
     public LoginState LoginState;
+
     public ConnectionErrorState ConnectionErrorState;
+
     public MainState MainState;
-    #endregion
+
+    #endregion StateMachine
 
     private void Awake()
     {
@@ -33,14 +39,13 @@ public class MainManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
-    void Start()
+
+    private void Start()
     {
         LoginManager = GetComponent<LoginManager>();
         UIManager = GetComponent<UIManager>();
 
-
-        ApplicationState = new StateMachine<MainManager>();  
+        ApplicationState = new StateMachine<MainManager>();
         LoginState = new LoginState(ApplicationState, this);
         ConnectionErrorState = new ConnectionErrorState(ApplicationState, this);
 
@@ -49,7 +54,7 @@ public class MainManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         ApplicationState.UpdateState();
     }
@@ -65,8 +70,9 @@ public class MainManager : MonoBehaviour
     public enum RequestMethods
     {
         GET,
+
         POST,
+
         PUT,
     }
-
 }

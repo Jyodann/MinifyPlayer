@@ -6,7 +6,6 @@ namespace Assets.ApplicationStates
     {
         public LoginState(StateMachine<MainManager> SM, MainManager manager) : base(SM, manager)
         {
-            
         }
 
         public override void Enter()
@@ -14,7 +13,7 @@ namespace Assets.ApplicationStates
             Manager.UIManager.ShowUI(UIManager.UI.Login);
 
             var refresh_Token = PlayerPrefs.GetString("refresh_token", string.Empty);
-            
+
             if (!refresh_Token.Equals(string.Empty))
             {
                 MainManager.Instance.LoginManager.AuthToken.refresh_token = refresh_Token;
@@ -25,7 +24,6 @@ namespace Assets.ApplicationStates
 
         public override void Exit()
         {
-            
         }
 
         public override void Update()
