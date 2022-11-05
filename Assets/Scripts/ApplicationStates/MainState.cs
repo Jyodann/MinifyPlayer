@@ -31,7 +31,7 @@ namespace Assets.ApplicationStates
             if (Input.GetKeyDown(KeyCode.E))
             {
                 // Purposely Expire code:
-                MainManager.Instance.LoginManager.RefreshToken();
+                MainManager.Instance.LoginManager.RefreshToken(false);
             }
         }
 
@@ -128,7 +128,7 @@ namespace Assets.ApplicationStates
 
                 if (request.responseCode == 401)
                 {
-                    MainManager.Instance.LoginManager.RefreshToken();
+                    MainManager.Instance.LoginManager.RefreshToken(false);
                     AttemptUpdatePlaybackState();
                     yield break;
                 }

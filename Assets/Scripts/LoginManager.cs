@@ -1,46 +1,36 @@
 using Assets;
-using Assets.Scripts;
 using Newtonsoft.Json;
-using System;
 using System.Collections;
-using System.Net;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class LoginManager : MonoBehaviour
 {
-    [SerializeField] string DebugString;
-    
-    public AuthToken AuthToken;
+    public AuthToken AuthToken = new AuthToken();
     public bool isAuthorized { get; private set; }
     public bool isTokenExpired = false;
 
-    
     private string baseUrl = string.Empty;
     private string redirectUrl { get => $"{baseUrl}/callback"; }
-    private string getTokenUrl { get => $"{baseUrl}/getToken"; }
-    private string refreshTokenUrl { get => $"{baseUrl}/refresh_token"; }
+    private string getTokenUrl { get => $"{baseUrl}/gettoken"; }
+    private string refreshTokenUrl { get => $"{baseUrl}/refreshtoken"; }
 
     public string client_id = "9830ce611cad40ab98aaca36e75c0b79";
     
-    void Start()
+    void Awake()
     {
         // Start with Empty Auth Token:
-        AuthToken = new AuthToken();
 #if UNITY_EDITOR
-        // Editing
         baseUrl = "https://localhost:7252";
 #else 
-        // Production URL:
-        baseUrl = "https://localhost:7252";
+        baseUrl = "https://r59741kpgh.execute-api.ap-southeast-1.amazonaws.com/prod";
 #endif
     }
 
     // Opens the GET Request for Callback to Application:
     public void OpenLoginPrompt()
     {
-        Application.OpenURL($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={redirectUrl}&scope=user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-playback-position");
+        Application.OpenURL($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={redirectUrl}&scope=user-read-playback-state user-modify-playback-state user-read-currently-playing");
     }
 
     public void GetToken()
@@ -73,10 +63,8 @@ public class LoginManager : MonoBehaviour
                 }
 
                 MainManager.Instance.LoginManager.AuthToken = authToken;
-
+                PlayerPrefs.SetString("refresh_token", authToken.refresh_token);
                 MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
-
-                print(authToken);
                 yield break;
             }
 
@@ -88,17 +76,20 @@ public class LoginManager : MonoBehaviour
         }
     }
 
-    public void RefreshToken()
+    public void RefreshToken(bool refreshLogin)
     {
-        StartCoroutine(GetRefreshToken(AuthToken.refresh_token));
+        print("Refresh Token");
+        StartCoroutine(GetRefreshToken(AuthToken.refresh_token, refreshLogin));
     }
 
-    IEnumerator GetRefreshToken(string token)
+    IEnumerator GetRefreshToken(string token, bool refreshLogin)
     {
+        print($"{refreshTokenUrl}?refresh_token={token}");
         using (var request = UnityWebRequest.Get($"{refreshTokenUrl}?refresh_token={token}"))
         {
             yield return request.SendWebRequest();
-            print(request.downloadHandler.text);
+            
+            print(request.downloadHandler.text);    
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);
@@ -109,9 +100,12 @@ public class LoginManager : MonoBehaviour
                     yield break;
                 }
 
-                print(authToken);
-
                 MainManager.Instance.LoginManager.AuthToken.access_token = authToken.access_token;
+
+                if (refreshLogin)
+                {
+                    MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
+                }
                 yield break;
             }
 

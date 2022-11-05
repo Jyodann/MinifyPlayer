@@ -12,6 +12,15 @@ namespace Assets.ApplicationStates
         public override void Enter()
         {
             Manager.UIManager.ShowUI(UIManager.UI.Login);
+
+            var refresh_Token = PlayerPrefs.GetString("refresh_token", string.Empty);
+            
+            if (!refresh_Token.Equals(string.Empty))
+            {
+                MainManager.Instance.LoginManager.AuthToken.refresh_token = refresh_Token;
+
+                MainManager.Instance.LoginManager.RefreshToken(true);
+            }
         }
 
         public override void Exit()
@@ -21,11 +30,6 @@ namespace Assets.ApplicationStates
 
         public override void Update()
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                // Purposely Expire code:
-                MainManager.Instance.LoginManager.RefreshToken();
-            }
         }
     }
 }

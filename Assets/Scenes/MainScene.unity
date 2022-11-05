@@ -434,7 +434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf37e00144735b4ab89c9faf9430050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugString: http://localhost:8000/callback#access_token=BQAJJiE9ymP4QQ9NRMhgNnhOS_vko3KJFjXKd4y2dhZCc4ken90DkPc9C0dqprKl0svdT8ppznXoyR4EZC4If_27VSTG2J24jmwvOgyLUmar97ILu1cKX1Ibo74SGiRiv8WtQfvKoW7va6GujEkJVscO2uRe59v_-3fuPEZivG0oxjdPHbd4UE6iJuGQsfU&token_type=Bearer&expires_in=3600
   isTokenExpired: 0
   client_id: 9830ce611cad40ab98aaca36e75c0b79
 --- !u!114 &267030512
@@ -931,7 +930,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &829392225
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1630,7 +1629,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Current Song Playing
+  m_text: Searching for Spotify Client...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2f4f2fad3cfafab49afce2dadf240985, type: 2}
   m_sharedMaterial: {fileID: 4642883009173765779, guid: 2f4f2fad3cfafab49afce2dadf240985, type: 2}
@@ -2248,7 +2247,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1955049273
 RectTransform:
   m_ObjectHideFlags: 0
