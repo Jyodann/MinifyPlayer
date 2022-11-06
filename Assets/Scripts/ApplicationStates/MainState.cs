@@ -99,11 +99,13 @@ namespace Assets.ApplicationStates
                         // If no previous state, set one:
                         if (PreviousPlaybackState.SongName.Equals(string.Empty))
                         {
+                            Debug.LogWarning("Set Previous State");
                             UIManager.SetSongName(CurrentPlaybackState.SongName);
                             UIManager.SetAlbumArtURL(CurrentPlaybackState.AlbumArtURL);
 
                             PreviousPlaybackState.CopyPlaybackState(CurrentPlaybackState);
                             AttemptUpdatePlaybackState();
+                            
                             yield break;
                         }
 
@@ -113,8 +115,8 @@ namespace Assets.ApplicationStates
                             Debug.Log("Song Changed");
                             UIManager.SetSongName(CurrentPlaybackState.SongName);
                             UIManager.SetAlbumArtURL(CurrentPlaybackState.AlbumArtURL);
-
                             PreviousPlaybackState.CopyPlaybackState(CurrentPlaybackState);
+                            
                         }
 
                         AttemptUpdatePlaybackState();

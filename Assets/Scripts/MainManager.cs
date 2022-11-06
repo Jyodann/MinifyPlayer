@@ -9,9 +9,9 @@ public class MainManager : MonoBehaviour
 
     #region Managers
 
-    public LoginManager LoginManager;
-
-    public UIManager UIManager;
+    [HideInInspector] public LoginManager LoginManager;
+    [HideInInspector] public UIManager UIManager;
+    [HideInInspector] public MarqueeManager MarqueeManager;
 
     #endregion Managers
 
@@ -44,6 +44,7 @@ public class MainManager : MonoBehaviour
     {
         LoginManager = GetComponent<LoginManager>();
         UIManager = GetComponent<UIManager>();
+        MarqueeManager = GetComponent<MarqueeManager>();
 
         ApplicationState = new StateMachine<MainManager>();
         LoginState = new LoginState(ApplicationState, this);

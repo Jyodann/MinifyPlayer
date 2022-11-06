@@ -68,7 +68,10 @@ public class UIManager : MonoBehaviour
         selectedUI.SetActive(true);
     }
 
-    public void SetSongName(string name) => SongNameText.text = name;
+    public void SetSongName(string name) {
+        SongNameText.text = name; 
+        MainManager.Instance.MarqueeManager.isNewSong = true;
+    }
 
     public void SetAlbumArtURL(string url)
     {
