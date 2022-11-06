@@ -1,6 +1,8 @@
 ﻿using Assets.JsonModels;
 using Newtonsoft.Json;
 using System.Collections;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -68,6 +70,7 @@ namespace Assets.ApplicationStates
                         var genericPlaybackState = JsonConvert.DeserializeObject<PlaybackStateGeneric>(
                         request.downloadHandler.text);
                         Debug.Log($"Song Type: {genericPlaybackState.currently_playing_type}");
+                        Debug.Log(request.downloadHandler.text);
                         switch (genericPlaybackState.currently_playing_type)
                         {
                             case "unknown":
@@ -78,7 +81,7 @@ namespace Assets.ApplicationStates
 
                                 CurrentPlaybackState.SongName = playBackStateSong.item.name;
                                 CurrentPlaybackState.AlbumArtURL = playBackStateSong.item.album.images[0].url;
-
+                                CurrentPlaybackState.Artists = string.Join(", ", playBackStateSong.item.artists.Select(x => x.name));
                                 break;
 
                             case "episode":
@@ -86,7 +89,7 @@ namespace Assets.ApplicationStates
 
                                 CurrentPlaybackState.SongName = playBackStatePodcast.item.name;
                                 CurrentPlaybackState.AlbumArtURL = playBackStatePodcast.item.images[0].url;
-
+                                CurrentPlaybackState.Artists = string.Join(", ", playBackStatePodcast.item.show.publisher);
                                 break;
 
                             default:
@@ -94,15 +97,12 @@ namespace Assets.ApplicationStates
                                 break;
                         }
 
-                        var UIManager = MainManager.Instance.UIManager;
+                        
 
                         // If no previous state, set one:
                         if (PreviousPlaybackState.SongName.Equals(string.Empty))
                         {
-                            Debug.LogWarning("Set Previous State");
-                            UIManager.SetSongName(CurrentPlaybackState.SongName);
-                            UIManager.SetAlbumArtURL(CurrentPlaybackState.AlbumArtURL);
-
+                            SetAllUI(CurrentPlaybackState);
                             PreviousPlaybackState.CopyPlaybackState(CurrentPlaybackState);
                             AttemptUpdatePlaybackState();
                             
@@ -112,11 +112,8 @@ namespace Assets.ApplicationStates
                         // Check for Song Difference, then change
                         if (!CurrentPlaybackState.CheckForDifference(PreviousPlaybackState))
                         {
-                            Debug.Log("Song Changed");
-                            UIManager.SetSongName(CurrentPlaybackState.SongName);
-                            UIManager.SetAlbumArtURL(CurrentPlaybackState.AlbumArtURL);
+                            SetAllUI(CurrentPlaybackState);
                             PreviousPlaybackState.CopyPlaybackState(CurrentPlaybackState);
-                            
                         }
 
                         AttemptUpdatePlaybackState();
@@ -137,6 +134,15 @@ namespace Assets.ApplicationStates
                     yield break;
                 }
             }
+        }
+    
+        private void SetAllUI(PlaybackState playbackState)
+        {
+            var UIManager = MainManager.Instance.UIManager;
+
+            
+            UIManager.SetSongName($"{playbackState.SongName} - {playbackState.Artists}");
+            UIManager.SetAlbumArtURL(playbackState.AlbumArtURL);
         }
     }
 }

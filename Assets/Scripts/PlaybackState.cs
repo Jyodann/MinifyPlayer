@@ -6,6 +6,8 @@
 
         public string AlbumArtURL { get; set; } = string.Empty;
 
+        public string Artists { get; set; } = string.Empty;
+
         public PlaybackState()
         {
         }
