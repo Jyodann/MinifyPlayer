@@ -485,7 +485,7 @@ MonoBehaviour:
   SongName: {fileID: 1178109204}
   increment: 0.5
   pauseMarqueeDuration: 2
-  marqueeStyle: 0
+  marqueeStyle: 1
   rollOverWidth: 30
 --- !u!1 &326138303
 GameObject:
