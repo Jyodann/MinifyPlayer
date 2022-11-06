@@ -15,6 +15,7 @@ public class MarqueeManager : MonoBehaviour
     [SerializeField] float increment = 0.1f;
     [SerializeField] float pauseMarqueeDuration = 3f;
     [SerializeField] MarqueeStyle marqueeStyle = MarqueeStyle.SpotifyBouncing;
+    [SerializeField] float rollOverWidth = 30f;
 
     float oldXDelta = 0.0f;
 
@@ -45,6 +46,7 @@ public class MarqueeManager : MonoBehaviour
     {
         print($"Recalculating Boundaries: {songNameRect.sizeDelta.x}");
         StopAllCoroutines();
+        Destroy(SongNameClone);
         if (songNameRect.sizeDelta.x < 0)
         {
             // Resize to Center, if song fits whole screen
@@ -59,7 +61,7 @@ public class MarqueeManager : MonoBehaviour
         endingPos = new Vector3(-(songNameRect.sizeDelta.x / 2), songNameRect.localPosition.y, 0);
         songNameRect.localPosition = startingPos;
 
-        Destroy(SongNameClone);
+        
 
         switch (marqueeStyle)
         {
@@ -79,19 +81,37 @@ public class MarqueeManager : MonoBehaviour
     {
         var currentIncrement = increment;
         yield return new WaitForSeconds(pauseMarqueeDuration);
-
+        var offset = rollOverWidth;
         SongNameClone = Instantiate(SongName, SongName.transform.position, Quaternion.identity, SongName.transform.parent);
         var cloneRect = SongNameClone.GetComponent<RectTransform>();
-        cloneRect.localPosition += new Vector3(songNameRect.rect.width, 0, 0);
+        cloneRect.localPosition += new Vector3(songNameRect.rect.width + offset, 0, 0);
+
+        var posOfEnd = startingPos.x - songNameRect.rect.width - offset;
+        print($"EndPos: {posOfEnd}");
+        var isClonedShowing = false;
+
         while (true)
         {
+            var isEnd = isClonedShowing ? (cloneRect.localPosition.x) < posOfEnd : (songNameRect.localPosition.x) < posOfEnd;
+
+            if (isEnd)
+            {
+                if (isClonedShowing)
+                {
+                    cloneRect.localPosition = songNameRect.localPosition + new Vector3(songNameRect.rect.width + offset, 0, 0);
+                }
+                else
+                {
+                   
+                    songNameRect.localPosition = cloneRect.localPosition + new Vector3(songNameRect.rect.width + offset, 0, 0); 
+                }
+
+                isClonedShowing = !isClonedShowing;
+            }
+
             songNameRect.localPosition += new Vector3(-currentIncrement, 0, 0);
             cloneRect.localPosition += new Vector3(-currentIncrement, 0, 0);
             yield return new WaitForFixedUpdate();
-            var isBeginning = (startingPos.x - songNameRect.localPosition.x) < 0;
-            var isEndning = (startingPos.y - songNameRect.localPosition.y);
-            var isAnimating = !isBeginning;
-
             yield return null;
         }
     }

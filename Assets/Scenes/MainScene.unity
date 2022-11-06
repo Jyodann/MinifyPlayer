@@ -483,10 +483,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SongName: {fileID: 1178109204}
-  SongNameClone: {fileID: 0}
   increment: 0.5
   pauseMarqueeDuration: 2
-  marqueeStyle: 1
+  marqueeStyle: 0
+  rollOverWidth: 30
 --- !u!1 &326138303
 GameObject:
   m_ObjectHideFlags: 0
