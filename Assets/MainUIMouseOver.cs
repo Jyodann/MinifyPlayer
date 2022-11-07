@@ -7,11 +7,11 @@ public class MainUIMouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExit
 {
     public void OnPointerEnter(PointerEventData eventData)
     {
-        
+        MainManager.Instance.MainState.EnablePlayPauseOverlay(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        
+        MainManager.Instance.MainState.EnablePlayPauseOverlay(false);
     }
 }

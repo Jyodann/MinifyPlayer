@@ -2,7 +2,7 @@
 {
     public class StateMachine<T>
     {
-        private State<T> CurrentState = null;
+        public State<T> CurrentState = null;
 
         public void Initialise(State<T> startingState)
         {

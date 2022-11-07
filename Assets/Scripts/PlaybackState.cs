@@ -7,6 +7,8 @@
         public string AlbumArtURL { get; set; } = string.Empty;
 
         public string Artists { get; set; } = string.Empty;
+        public bool IsPlaying { get; set; } = false;
+        public bool canShowOverlay { get; set; } = false;
 
         public PlaybackState()
         {

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI SongNameText;
@@ -16,7 +16,20 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject[] UIs;
 
+    [SerializeField] private GameObject PlayPauseOverlay;
+
+    [SerializeField] private Button PlayPauseButton;
+
+    [SerializeField] private Sprite PlayingSprite, PauseSprite;
+
+    private Image PlayPauseOverlayImage;
+
     public string TokenInput { get => TokenInputUI.text; }
+
+    private void Start()
+    {
+        PlayPauseOverlayImage = PlayPauseOverlay.GetComponent<Image>(); 
+    }
 
     public enum UI
     {
@@ -92,4 +105,28 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+    public void EnablePlayPauseOverlay(bool isEnabled)
+    {
+        
+        if (isEnabled)
+        {
+            PlayPauseOverlayImage.DOFade(0.8f, .2f);
+            PlayPauseButton.image.DOFade(1, .2f);
+            PlayPauseOverlay.SetActive(isEnabled);
+            return;
+        }
+        PlayPauseOverlayImage.DOFade(0f, .2f).OnComplete(() =>
+        {
+            PlayPauseOverlay.SetActive(isEnabled);
+        });
+        PlayPauseButton.image.DOFade(0f, .2f);
+    }
+
+    public void SetPlayPauseButtonState(bool isPlaying)
+    {
+        PlayPauseButton.image.sprite = isPlaying ? PauseSprite : PlayingSprite;
+    }
+
+    
 }

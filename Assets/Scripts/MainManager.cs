@@ -76,4 +76,9 @@ public class MainManager : MonoBehaviour
 
         PUT,
     }
+
+    public void AttemptPlayPause()
+    {
+        MainState.AttemptPausePlay();
+    }
 }

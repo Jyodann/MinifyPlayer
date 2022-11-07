@@ -59,7 +59,10 @@ namespace Assets.ApplicationStates
                 {
                     if (request.downloadHandler.text == string.Empty)
                     {
-                        //Debug.Log("Spotify Instance Disconnected");
+                        Debug.LogWarning("Spotify Instance Disconnected");
+                        
+                        MainManager.Instance.UIManager.SetSongName("Spotify not currently playing.");
+                        CurrentPlaybackState.canShowOverlay = false;
                         AttemptUpdatePlaybackState();
                         yield break;
                     }
@@ -69,8 +72,9 @@ namespace Assets.ApplicationStates
                         //Gets the Current Playing Type
                         var genericPlaybackState = JsonConvert.DeserializeObject<PlaybackStateGeneric>(
                         request.downloadHandler.text);
-                        Debug.Log($"Song Type: {genericPlaybackState.currently_playing_type}");
-                        Debug.Log(request.downloadHandler.text);
+                        MainManager.Instance.UIManager.SetPlayPauseButtonState(genericPlaybackState.is_playing);
+
+                        CurrentPlaybackState.canShowOverlay = true;
                         switch (genericPlaybackState.currently_playing_type)
                         {
                             case "unknown":
@@ -82,6 +86,7 @@ namespace Assets.ApplicationStates
                                 CurrentPlaybackState.SongName = playBackStateSong.item.name;
                                 CurrentPlaybackState.AlbumArtURL = playBackStateSong.item.album.images[0].url;
                                 CurrentPlaybackState.Artists = string.Join(", ", playBackStateSong.item.artists.Select(x => x.name));
+                                CurrentPlaybackState.IsPlaying = playBackStateSong.is_playing;
                                 break;
 
                             case "episode":
@@ -90,6 +95,7 @@ namespace Assets.ApplicationStates
                                 CurrentPlaybackState.SongName = playBackStatePodcast.item.name;
                                 CurrentPlaybackState.AlbumArtURL = playBackStatePodcast.item.images[0].url;
                                 CurrentPlaybackState.Artists = string.Join(", ", playBackStatePodcast.item.show.publisher);
+                                CurrentPlaybackState.IsPlaying = playBackStatePodcast.is_playing;
                                 break;
 
                             default:
@@ -136,13 +142,32 @@ namespace Assets.ApplicationStates
             }
         }
     
+
+        public void AttemptPausePlay()
+        {
+            MainManager.Instance.StartCoroutine(PausePlay());
+        }
+
+        IEnumerator PausePlay()
+        {
+            var url = CurrentPlaybackState.IsPlaying ? "https://api.spotify.com/v1/me/player/pause" : "https://api.spotify.com/v1/me/player/play";
+            using (var request = MainManager.Instance.GetUnityWebRequestObject(url, MainManager.RequestMethods.PUT))
+            {
+                yield return request.SendWebRequest();
+            }
+        }
+
         private void SetAllUI(PlaybackState playbackState)
         {
             var UIManager = MainManager.Instance.UIManager;
-
-            
             UIManager.SetSongName($"{playbackState.SongName} - {playbackState.Artists}");
             UIManager.SetAlbumArtURL(playbackState.AlbumArtURL);
+        }
+
+        public void EnablePlayPauseOverlay(bool isEnabled)
+        {
+            if (!CurrentPlaybackState.canShowOverlay) return;
+            Manager.UIManager.EnablePlayPauseOverlay(isEnabled);    
         }
     }
 }
