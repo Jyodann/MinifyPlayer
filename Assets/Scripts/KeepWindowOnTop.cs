@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KeepWindowOnTop : MonoBehaviour
 {
-#if !UNITY_STANDALONE_LINUX
+#if UNITY_STANDALONE_WIN
 
     private bool isWindowTop = false;
 
@@ -33,12 +33,17 @@ public class KeepWindowOnTop : MonoBehaviour
     {
         return GetActiveWindow();
     }
+    WindowScript WindowScript;
 
-#endif
+    private void Start()
+    {
+        WindowScript = GetComponent<WindowScript>();
 
+        WindowScript.OnNoBorderBtnClick();
+    }
     private void Awake()
     {
-#if !UNITY_EDITOR && !UNITY_STANDALONE_LINUX
+#if !UNITY_EDITOR && UNITY_STANDALONE_WIN
         Debug.Log("Make window stay on top");
         SetWindowPos(GetActiveWindow(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 #endif
@@ -60,4 +65,5 @@ public class KeepWindowOnTop : MonoBehaviour
             isWindowTop = !isWindowTop;
         }
     }
+#endif
 }
