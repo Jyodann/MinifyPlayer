@@ -22,6 +22,7 @@ namespace Assets.ApplicationStates
         {
             AttemptUpdatePlaybackState();
             Manager.UIManager.ShowUI(UIManager.UI.Main);
+            Manager.UIManager.SetAlbumArt(UIManager.AlbumArtIcons.Search);
         }
 
         public override void Exit()
@@ -61,8 +62,9 @@ namespace Assets.ApplicationStates
                     {
                         Debug.LogWarning("Spotify Instance Disconnected");
                         
-                        MainManager.Instance.UIManager.SetSongName("Spotify not currently playing.");
+                        Manager.UIManager.SetSongName("Spotify not currently playing. Try playing a song to resume Miniplayer!");
                         CurrentPlaybackState.canShowOverlay = false;
+                        Manager.UIManager.SetAlbumArt(UIManager.AlbumArtIcons.MusicOff);
                         AttemptUpdatePlaybackState();
                         yield break;
                     }
@@ -74,7 +76,7 @@ namespace Assets.ApplicationStates
                         request.downloadHandler.text);
                         MainManager.Instance.UIManager.SetPlayPauseButtonState(genericPlaybackState.is_playing);
 
-                        CurrentPlaybackState.canShowOverlay = true;
+                        
                         switch (genericPlaybackState.currently_playing_type)
                         {
                             case "unknown":
@@ -103,7 +105,12 @@ namespace Assets.ApplicationStates
                                 break;
                         }
 
-                        
+                        if (!CurrentPlaybackState.canShowOverlay)
+                        {
+                            SetAllUI(CurrentPlaybackState);
+                            PreviousPlaybackState.CopyPlaybackState(CurrentPlaybackState);
+                            CurrentPlaybackState.canShowOverlay = true;
+                        }
 
                         // If no previous state, set one:
                         if (PreviousPlaybackState.SongName.Equals(string.Empty))
@@ -161,7 +168,7 @@ namespace Assets.ApplicationStates
         {
             var UIManager = MainManager.Instance.UIManager;
             UIManager.SetSongName($"{playbackState.SongName} - {playbackState.Artists}");
-            UIManager.SetAlbumArtURL(playbackState.AlbumArtURL);
+            UIManager.SetAlbumArt(playbackState.AlbumArtURL);
         }
 
         public void EnablePlayPauseOverlay(bool isEnabled)

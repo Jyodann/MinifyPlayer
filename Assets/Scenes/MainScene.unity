@@ -553,6 +553,9 @@ MonoBehaviour:
   PlayPauseButton: {fileID: 2020943898}
   PlayingSprite: {fileID: 21300000, guid: c1ca6f5257b9bb84d8a7445909a3591d, type: 3}
   PauseSprite: {fileID: 21300000, guid: 7a07c0d3ed5773445ad87aa4608ad5fb, type: 3}
+  MusicOn: {fileID: 2800000, guid: 74df8eea559369845b0694e23bbd003d, type: 3}
+  MusicOff: {fileID: 2800000, guid: 80ca28480036eba4b9870cc513d93004, type: 3}
+  Search: {fileID: 2800000, guid: be8e4b484d6027448861d537f9ec1814, type: 3}
 --- !u!114 &267030514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1837,7 +1840,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Searching for Client...
+  m_text: Try playing a song on Spotify!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2f4f2fad3cfafab49afce2dadf240985, type: 2}
   m_sharedMaterial: {fileID: 4642883009173765779, guid: 2f4f2fad3cfafab49afce2dadf240985, type: 2}

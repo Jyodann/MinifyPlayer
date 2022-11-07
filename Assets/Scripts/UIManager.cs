@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button PlayPauseButton;
 
     [SerializeField] private Sprite PlayingSprite, PauseSprite;
+    [SerializeField] private Texture2D MusicOn, MusicOff, Search;
 
     private Image PlayPauseOverlayImage;
 
@@ -38,6 +39,28 @@ public class UIManager : MonoBehaviour
         Main,
 
         ConnectionError
+    }
+
+    public enum AlbumArtIcons
+    {
+        MusicOn,
+        MusicOff,
+        Search
+    }
+
+    private Texture2D GetAlbumArtIcon(AlbumArtIcons icons)
+    {
+        switch (icons)
+        {
+            case AlbumArtIcons.MusicOn:
+                return MusicOn;
+            case AlbumArtIcons.MusicOff:
+                return MusicOff;
+            case AlbumArtIcons.Search:
+                return Search;
+        }
+
+        return null;
     }
 
     public void ShowUI(UI selectedUI)
@@ -86,15 +109,21 @@ public class UIManager : MonoBehaviour
         MainManager.Instance.MarqueeManager.isNewSong = true;
     }
 
-    public void SetAlbumArtURL(string url)
+    public void SetAlbumArt(string url)
     {
         StartCoroutine(GetRemoteTexture(url));
+    }
+
+    public void SetAlbumArt(AlbumArtIcons icon)
+    {
+        SongAlbumArt.texture = GetAlbumArtIcon(icon);
     }
 
     public void SetProceedButtonEnabled(bool isEnabled) => ProceedButton.interactable = isEnabled;
 
     private IEnumerator GetRemoteTexture(string uri)
     {
+        Debug.Log("UIManager Downloaded New Textures");
         using (var request = UnityWebRequestTexture.GetTexture(uri))
         {
             yield return request.SendWebRequest();
