@@ -33,7 +33,8 @@ public class KeepWindowOnTop : MonoBehaviour
     {
         return GetActiveWindow();
     }
-    WindowScript WindowScript;
+
+    private WindowScript WindowScript;
 
     private void Start()
     {
@@ -43,6 +44,7 @@ public class KeepWindowOnTop : MonoBehaviour
         WindowScript.OnNoBorderBtnClick();
 #endif
     }
+
     private void Awake()
     {
 #if !UNITY_EDITOR && UNITY_STANDALONE_WIN
@@ -67,5 +69,6 @@ public class KeepWindowOnTop : MonoBehaviour
             isWindowTop = !isWindowTop;
         }
     }
+
 #endif
-    }
+}

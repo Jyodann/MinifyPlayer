@@ -1,39 +1,45 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MarqueeManager : MonoBehaviour
 {
     public bool isNewSong { get; set; }
-    [SerializeField] GameObject SongName;
-    GameObject SongNameClone;
 
-    RectTransform songNameRect;
-    Vector3 startingPos;
-    Vector3 endingPos;
-    [SerializeField] float increment = 0.1f;
-    [SerializeField] float pauseMarqueeDuration = 3f;
-    [SerializeField] MarqueeStyle marqueeStyle = MarqueeStyle.SpotifyBouncing;
-    [SerializeField] float rollOverWidth = 30f;
+    [SerializeField] private GameObject SongName;
 
-    float oldXDelta = 0.0f;
+    private GameObject SongNameClone;
 
+    private RectTransform songNameRect;
 
-    enum MarqueeStyle
+    private Vector3 startingPos;
+
+    private Vector3 endingPos;
+
+    [SerializeField] private float increment = 0.1f;
+
+    [SerializeField] private float pauseMarqueeDuration = 3f;
+
+    [SerializeField] private MarqueeStyle marqueeStyle = MarqueeStyle.SpotifyBouncing;
+
+    [SerializeField] private float rollOverWidth = 30f;
+
+    private float oldXDelta = 0.0f;
+
+    private enum MarqueeStyle
     {
         SpotifyBouncing,
+
         RollOver
     }
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         songNameRect = SongName.GetComponent<RectTransform>();
     }
 
-
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (oldXDelta != songNameRect.sizeDelta.x)
         {
@@ -42,7 +48,7 @@ public class MarqueeManager : MonoBehaviour
         }
     }
 
-    void RecalculateBounds()
+    private void RecalculateBounds()
     {
         print($"Recalculating Boundaries: {songNameRect.sizeDelta.x}");
         StopAllCoroutines();
@@ -61,23 +67,22 @@ public class MarqueeManager : MonoBehaviour
         endingPos = new Vector3(-(songNameRect.sizeDelta.x / 2), songNameRect.localPosition.y, 0);
         songNameRect.localPosition = startingPos;
 
-        
-
         switch (marqueeStyle)
         {
             case MarqueeStyle.SpotifyBouncing:
                 StartCoroutine(MarqueeText());
                 break;
+
             case MarqueeStyle.RollOver:
                 StartCoroutine(StartRollOverMarquee());
                 break;
+
             default:
                 break;
         }
-        
     }
 
-    IEnumerator StartRollOverMarquee()
+    private IEnumerator StartRollOverMarquee()
     {
         var currentIncrement = increment;
         yield return new WaitForSeconds(pauseMarqueeDuration);
@@ -102,8 +107,7 @@ public class MarqueeManager : MonoBehaviour
                 }
                 else
                 {
-                   
-                    songNameRect.localPosition = cloneRect.localPosition + new Vector3(songNameRect.rect.width + offset, 0, 0); 
+                    songNameRect.localPosition = cloneRect.localPosition + new Vector3(songNameRect.rect.width + offset, 0, 0);
                 }
 
                 isClonedShowing = !isClonedShowing;
@@ -116,7 +120,7 @@ public class MarqueeManager : MonoBehaviour
         }
     }
 
-    IEnumerator MarqueeText()
+    private IEnumerator MarqueeText()
     {
         var currentIncrement = increment;
         yield return new WaitForSeconds(pauseMarqueeDuration);
@@ -126,7 +130,7 @@ public class MarqueeManager : MonoBehaviour
             var isBeginning = (startingPos.x - songNameRect.localPosition.x) < 0;
             var isAnimating = !isBeginning && !isEnd;
             print($"IsBegin: {isBeginning} isEnd: {isEnd} isAnimating: {isAnimating} Increment: {increment}");
-            
+
             if (isAnimating)
             {
                 songNameRect.localPosition += new Vector3(-currentIncrement, 0, 0);
@@ -147,7 +151,6 @@ public class MarqueeManager : MonoBehaviour
                 songNameRect.localPosition += new Vector3(-currentIncrement, 0, 0);
             }
             //songNameRect.localPosition += new Vector3(-increment, 0, 0);
-            
-        }   
+        }
     }
 }

@@ -1,9 +1,10 @@
+using DG.Tweening;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using DG.Tweening;
+
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI SongNameText;
@@ -21,6 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button PlayPauseButton;
 
     [SerializeField] private Sprite PlayingSprite, PauseSprite;
+
     [SerializeField] private Texture2D MusicOn, MusicOff, Search;
 
     private Image PlayPauseOverlayImage;
@@ -29,7 +31,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        PlayPauseOverlayImage = PlayPauseOverlay.GetComponent<Image>(); 
+        PlayPauseOverlayImage = PlayPauseOverlay.GetComponent<Image>();
     }
 
     public enum UI
@@ -44,7 +46,9 @@ public class UIManager : MonoBehaviour
     public enum AlbumArtIcons
     {
         MusicOn,
+
         MusicOff,
+
         Search
     }
 
@@ -54,8 +58,10 @@ public class UIManager : MonoBehaviour
         {
             case AlbumArtIcons.MusicOn:
                 return MusicOn;
+
             case AlbumArtIcons.MusicOff:
                 return MusicOff;
+
             case AlbumArtIcons.Search:
                 return Search;
         }
@@ -104,8 +110,9 @@ public class UIManager : MonoBehaviour
         selectedUI.SetActive(true);
     }
 
-    public void SetSongName(string name) {
-        SongNameText.text = name; 
+    public void SetSongName(string name)
+    {
+        SongNameText.text = name;
         MainManager.Instance.MarqueeManager.isNewSong = true;
     }
 
@@ -137,7 +144,6 @@ public class UIManager : MonoBehaviour
 
     public void EnablePlayPauseOverlay(bool isEnabled)
     {
-        
         if (isEnabled)
         {
             PlayPauseOverlayImage.DOFade(0.8f, .2f);
@@ -156,6 +162,4 @@ public class UIManager : MonoBehaviour
     {
         PlayPauseButton.image.sprite = isPlaying ? PauseSprite : PlayingSprite;
     }
-
-    
 }

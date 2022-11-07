@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -61,7 +60,7 @@ namespace Assets.ApplicationStates
                     if (request.downloadHandler.text == string.Empty)
                     {
                         Debug.LogWarning("Spotify Instance Disconnected");
-                        
+
                         Manager.UIManager.SetSongName("Spotify not currently playing. Try playing a song to resume Miniplayer!");
                         CurrentPlaybackState.canShowOverlay = false;
                         Manager.UIManager.SetAlbumArt(UIManager.AlbumArtIcons.MusicOff);
@@ -76,7 +75,6 @@ namespace Assets.ApplicationStates
                         request.downloadHandler.text);
                         MainManager.Instance.UIManager.SetPlayPauseButtonState(genericPlaybackState.is_playing);
 
-                        
                         switch (genericPlaybackState.currently_playing_type)
                         {
                             case "unknown":
@@ -118,7 +116,7 @@ namespace Assets.ApplicationStates
                             SetAllUI(CurrentPlaybackState);
                             PreviousPlaybackState.CopyPlaybackState(CurrentPlaybackState);
                             AttemptUpdatePlaybackState();
-                            
+
                             yield break;
                         }
 
@@ -148,14 +146,13 @@ namespace Assets.ApplicationStates
                 }
             }
         }
-    
 
         public void AttemptPausePlay()
         {
             MainManager.Instance.StartCoroutine(PausePlay());
         }
 
-        IEnumerator PausePlay()
+        private IEnumerator PausePlay()
         {
             var url = CurrentPlaybackState.IsPlaying ? "https://api.spotify.com/v1/me/player/pause" : "https://api.spotify.com/v1/me/player/play";
             using (var request = MainManager.Instance.GetUnityWebRequestObject(url, MainManager.RequestMethods.PUT))
@@ -174,7 +171,7 @@ namespace Assets.ApplicationStates
         public void EnablePlayPauseOverlay(bool isEnabled)
         {
             if (!CurrentPlaybackState.canShowOverlay) return;
-            Manager.UIManager.EnablePlayPauseOverlay(isEnabled);    
+            Manager.UIManager.EnablePlayPauseOverlay(isEnabled);
         }
     }
 }

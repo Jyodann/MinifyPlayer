@@ -10,7 +10,9 @@ public class MainManager : MonoBehaviour
     #region Managers
 
     [HideInInspector] public LoginManager LoginManager;
+
     [HideInInspector] public UIManager UIManager;
+
     [HideInInspector] public MarqueeManager MarqueeManager;
 
     #endregion Managers
