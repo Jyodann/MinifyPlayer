@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -27,11 +28,17 @@ public class UIManager : MonoBehaviour
 
     private Image PlayPauseOverlayImage;
 
+    private List<Image> AllImages = new List<Image>();
+
     public string TokenInput { get => TokenInputUI.text; }
 
     private void Start()
     {
         PlayPauseOverlayImage = PlayPauseOverlay.GetComponent<Image>();
+
+        AllImages.AddRange(PlayPauseOverlay.GetComponentsInChildren<Image>(true));
+
+        AllImages.Remove(PlayPauseOverlayImage);
     }
 
     public enum UI
@@ -146,16 +153,26 @@ public class UIManager : MonoBehaviour
     {
         if (isEnabled)
         {
+            foreach (var item in AllImages)
+            {
+                print(item.name);
+                item.DOFade(1f, .2f);
+            }
             PlayPauseOverlayImage.DOFade(0.8f, .2f);
-            PlayPauseButton.image.DOFade(1, .2f);
             PlayPauseOverlay.SetActive(isEnabled);
             return;
         }
+
+        foreach (var item in AllImages)
+        {
+            print(item.name);
+            item.DOFade(0f, .3f);
+        }
+
         PlayPauseOverlayImage.DOFade(0f, .2f).OnComplete(() =>
         {
             PlayPauseOverlay.SetActive(isEnabled);
         });
-        PlayPauseButton.image.DOFade(0f, .2f);
     }
 
     public void SetPlayPauseButtonState(bool isPlaying)

@@ -79,8 +79,15 @@ public class MainManager : MonoBehaviour
         PUT,
     }
 
+    // Tied to PlayPauseButton OnClick()
     public void AttemptPlayPause()
     {
         MainState.AttemptPausePlay();
+    }
+
+    // Tied to Logout Button OnClick()
+    public void Logout()
+    {
+        MainState.Logout();
     }
 }

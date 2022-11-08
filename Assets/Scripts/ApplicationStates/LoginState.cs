@@ -12,11 +12,10 @@ namespace Assets.ApplicationStates
         {
             Manager.UIManager.ShowUI(UIManager.UI.Login);
 
-            var refresh_Token = PlayerPrefs.GetString("refresh_token", string.Empty);
-
-            if (!refresh_Token.Equals(string.Empty))
+            if (Manager.LoginManager.GetRefreshTokenFromMemory(out var token))
             {
-                MainManager.Instance.LoginManager.AuthToken.refresh_token = refresh_Token;
+                Debug.Log(token);
+                MainManager.Instance.LoginManager.SetRefreshToken(token);
 
                 MainManager.Instance.LoginManager.RefreshToken(true);
             }

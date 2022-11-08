@@ -173,5 +173,11 @@ namespace Assets.ApplicationStates
             if (!CurrentPlaybackState.canShowOverlay) return;
             Manager.UIManager.EnablePlayPauseOverlay(isEnabled);
         }
+
+        public void Logout()
+        {
+            Manager.LoginManager.InValidateToken();
+            Manager.ApplicationState.ChangeState(Manager.LoginState);
+        }
     }
 }

@@ -60,7 +60,7 @@ public class LoginManager : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);
-
+                print(request.downloadHandler.text);
                 if (authToken.access_token == null)
                 {
                     Debug.LogError("Access Token invalid");
@@ -88,6 +88,7 @@ public class LoginManager : MonoBehaviour
 
     private IEnumerator GetRefreshToken(string token, bool refreshLogin)
     {
+        print($"RefreshToken: {token}");
         using (var request = UnityWebRequest.Get($"{refreshTokenUrl}?refresh_token={token}"))
         {
             yield return request.SendWebRequest();
@@ -95,7 +96,7 @@ public class LoginManager : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);
-
+                print(request.downloadHandler.text);
                 if (authToken.access_token == null)
                 {
                     Debug.LogError("Access Token invalid");
@@ -117,5 +118,20 @@ public class LoginManager : MonoBehaviour
                 yield break;
             }
         }
+    }
+
+    public void SetRefreshToken(string token) => AuthToken.refresh_token = token;
+
+    public void InValidateToken()
+    {
+        AuthToken.refresh_token = string.Empty;
+        PlayerPrefs.SetString("refresh_token", string.Empty);
+    }
+
+    public bool GetRefreshTokenFromMemory(out string refreshToken)
+    {
+        refreshToken = PlayerPrefs.GetString("refresh_token", string.Empty);
+
+        return refreshToken != string.Empty;
     }
 }
