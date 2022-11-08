@@ -43,15 +43,14 @@ namespace Assets.ApplicationStates
                     using (var response = Manager.GetUnityWebRequestObject("https://api.spotify.com/v1/me", MainManager.RequestMethods.GET))
                     {
                         yield return response.SendWebRequest();
-
+                        TimeToAttempt = 5;
                         if (response.result != UnityEngine.Networking.UnityWebRequest.Result.ConnectionError)
                         {
                             StateMachine.ChangeState(Manager.LoginState);
-
                             yield break;
                         }
 
-                        TimeToAttempt = 5;
+                        
                         ConnectBack();
                         yield break;
                     }

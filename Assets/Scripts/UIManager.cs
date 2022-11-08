@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI SongNameText, VersionNumber;
+    [SerializeField] private TextMeshProUGUI SongNameText, VersionNumber, LoginErrorText;
 
     [SerializeField] private RawImage SongAlbumArt;
 
@@ -198,5 +198,9 @@ public class UIManager : MonoBehaviour
         VersionNumber.text = text;
     }
 
+    public void SetLoginErrorText(string text)
+    {
+        LoginErrorText.text = text;
+    }
 
 }

@@ -41,7 +41,7 @@ public class LoginManager : MonoBehaviour
     public void GetToken()
     {
         var token = MainManager.Instance.UIManager.TokenInput;
-
+        MainManager.Instance.UIManager.SetLoginErrorText(string.Empty);
         StartCoroutine(GetTokenFromSpotify(token));
     }
 
@@ -54,7 +54,7 @@ public class LoginManager : MonoBehaviour
             yield return request.SendWebRequest();
 
             print($"{getTokenUrl}?code={token}&redirect_url={redirectUrl}");
-            print(request.downloadHandler.text);
+            print(request.result.ToString());
             MainManager.Instance.UIManager.SetProceedButtonEnabled(true);
 
             if (request.result == UnityWebRequest.Result.Success)
@@ -64,6 +64,7 @@ public class LoginManager : MonoBehaviour
                 if (authToken.access_token == null)
                 {
                     Debug.LogError("Access Token invalid");
+                    MainManager.Instance.UIManager.SetLoginErrorText("Unable to verify code. Please try to login again.");
                     yield break;
                 }
 
@@ -72,12 +73,7 @@ public class LoginManager : MonoBehaviour
                 MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
                 yield break;
             }
-
-            if (request.result == UnityWebRequest.Result.ConnectionError)
-            {
-                //Handle if no internet connection
-                yield break;
-            }
+            MainManager.Instance.UIManager.SetLoginErrorText("No Internet Connection.\nPlease try again.");
         }
     }
 
@@ -100,6 +96,7 @@ public class LoginManager : MonoBehaviour
                 if (authToken.access_token == null)
                 {
                     Debug.LogError("Access Token invalid");
+                    MainManager.Instance.UIManager.SetLoginErrorText("Login Expired.\nPlease login again");
                     yield break;
                 }
 
@@ -112,11 +109,7 @@ public class LoginManager : MonoBehaviour
                 yield break;
             }
 
-            if (request.result == UnityWebRequest.Result.ConnectionError)
-            {
-                //Handle if no internet connection
-                yield break;
-            }
+            MainManager.Instance.UIManager.SetLoginErrorText("No Internet Connection.\nPlease try again.");
         }
     }
 

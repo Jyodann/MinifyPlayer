@@ -11,7 +11,7 @@ namespace Assets.ApplicationStates
         public override void Enter()
         {
             Manager.UIManager.ShowUI(UIManager.UI.Login);
-
+            MainManager.Instance.UIManager.SetLoginErrorText(string.Empty);
             if (Manager.LoginManager.GetRefreshTokenFromMemory(out var token))
             {
                 Debug.Log(token);
