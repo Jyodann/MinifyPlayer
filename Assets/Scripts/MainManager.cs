@@ -27,6 +27,8 @@ public class MainManager : MonoBehaviour
 
     public MainState MainState;
 
+    public WindowManager WindowManager;
+
     #endregion StateMachine
 
     private void Awake()
@@ -89,5 +91,21 @@ public class MainManager : MonoBehaviour
     public void Logout()
     {
         MainState.Logout();
+    }
+
+    public void TogglePinState()
+    {
+        MainState.PinWindowToTop();
+    }
+
+    public void MinimiseWindow()
+    {
+        MainState.Minimise();
+    }
+
+    public void CloseWindow()
+    {
+        MainState.CloseWindow();
+       
     }
 }

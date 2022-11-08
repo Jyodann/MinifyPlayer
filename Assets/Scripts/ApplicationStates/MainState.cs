@@ -1,5 +1,6 @@
 ﻿using Assets.JsonModels;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -22,6 +23,9 @@ namespace Assets.ApplicationStates
             AttemptUpdatePlaybackState();
             Manager.UIManager.ShowUI(UIManager.UI.Main);
             Manager.UIManager.SetAlbumArt(UIManager.AlbumArtIcons.Search);
+
+            Manager.UIManager.SetPinnedButtonState(Manager.WindowManager.LoadPinnedState());
+            Manager.WindowManager.PinWindowToTop(Manager.WindowManager.LoadPinnedState());
         }
 
         public override void Exit()
@@ -30,11 +34,8 @@ namespace Assets.ApplicationStates
 
         public override void Update()
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                // Purposely Expire code:
-                MainManager.Instance.LoginManager.RefreshToken(false);
-            }
+            var newPinnedState = Manager.WindowManager.LoadPinnedState();
+            Manager.WindowManager.PinWindowToTop(newPinnedState);
         }
 
         private void AttemptUpdatePlaybackState()
@@ -178,6 +179,25 @@ namespace Assets.ApplicationStates
         {
             Manager.LoginManager.InValidateToken();
             Manager.ApplicationState.ChangeState(Manager.LoginState);
+        }
+
+        public void PinWindowToTop()
+        {
+            var windowManager = Manager.WindowManager;
+            var newPinnedState = !windowManager.LoadPinnedState();
+            windowManager.PinWindowToTop(newPinnedState);
+            windowManager.SavePinnedState(newPinnedState);
+            Manager.UIManager.SetPinnedButtonState(newPinnedState);
+        }
+
+        internal void Minimise()
+        {
+            Manager.WindowManager.MinimiseWindow();
+        }
+
+        internal void CloseWindow()
+        {
+            Application.Quit();
         }
     }
 }

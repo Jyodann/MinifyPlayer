@@ -6,8 +6,6 @@ public class KeepWindowOnTop : MonoBehaviour
 {
 #if UNITY_STANDALONE_WIN
 
-    private bool isWindowTop = false;
-
     // https://stackoverflow.com/a/34703664/5452781
     private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
 
@@ -34,40 +32,25 @@ public class KeepWindowOnTop : MonoBehaviour
         return GetActiveWindow();
     }
 
-    private WindowScript WindowScript;
-
-    private void Start()
-    {
-#if !UNITY_EDITOR && UNITY_STANDALONE_WIN
-        WindowScript = GetComponent<WindowScript>();
-
-        WindowScript.OnNoBorderBtnClick();
-#endif
-    }
-
     private void Awake()
     {
 #if !UNITY_EDITOR && UNITY_STANDALONE_WIN
-        Debug.Log("Make window stay on top");
-        SetWindowPos(GetActiveWindow(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+        SetWindowPos(GetActiveWindow(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 #endif
     }
 
-    private void Update()
+    public void PinWindow(bool isPinned)
     {
-        if (Input.GetKeyDown(KeyCode.R))
+#if !UNITY_EDITOR && UNITY_STANDALONE_WIN
+        if (!isPinned)
         {
-            if (isWindowTop)
-            {
-                SetWindowPos(GetActiveWindow(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-            }
-            else
-            {
-                SetWindowPos(GetActiveWindow(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-            }
-
-            isWindowTop = !isWindowTop;
+            SetWindowPos(GetActiveWindow(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
         }
+        else
+        {
+            SetWindowPos(GetActiveWindow(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+        }
+#endif
     }
 
 #endif

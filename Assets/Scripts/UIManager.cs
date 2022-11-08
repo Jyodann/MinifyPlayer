@@ -21,8 +21,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject PlayPauseOverlay;
 
     [SerializeField] private Button PlayPauseButton;
+    [SerializeField] private Button PinnedButton;
 
-    [SerializeField] private Sprite PlayingSprite, PauseSprite;
+    [SerializeField] private Sprite PlayingSprite, PauseSprite, PinnedSprite, UnpinnedSprite;
 
     [SerializeField] private Texture2D MusicOn, MusicOff, Search;
 
@@ -178,5 +179,10 @@ public class UIManager : MonoBehaviour
     public void SetPlayPauseButtonState(bool isPlaying)
     {
         PlayPauseButton.image.sprite = isPlaying ? PauseSprite : PlayingSprite;
+    }
+
+    public void SetPinnedButtonState(bool isPinned)
+    {
+        PinnedButton.image.sprite = isPinned ? UnpinnedSprite : PinnedSprite;
     }
 }
