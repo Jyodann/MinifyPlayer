@@ -1,6 +1,5 @@
 ﻿using Assets.JsonModels;
 using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -26,10 +25,14 @@ namespace Assets.ApplicationStates
 
             Manager.UIManager.SetPinnedButtonState(Manager.WindowManager.LoadPinnedState());
             Manager.WindowManager.PinWindowToTop(Manager.WindowManager.LoadPinnedState());
+            Manager.UIManager.SetVersionText($"{Application.productName} v{Application.version}");
         }
 
         public override void Exit()
         {
+            Manager.StopAllCoroutines();
+            CurrentPlaybackState = new PlaybackState();
+            CurrentPlaybackState = new PlaybackState();
         }
 
         public override void Update()
@@ -50,6 +53,7 @@ namespace Assets.ApplicationStates
             {
                 yield return request.SendWebRequest();
 
+                EnablePlayPauseButton(true);
                 if (request.result == UnityWebRequest.Result.ConnectionError)
                 {
                     MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.ConnectionErrorState);
@@ -66,6 +70,7 @@ namespace Assets.ApplicationStates
                         CurrentPlaybackState.canShowOverlay = false;
                         Manager.UIManager.SetAlbumArt(UIManager.AlbumArtIcons.MusicOff);
                         AttemptUpdatePlaybackState();
+                        EnablePlayPauseButton(false);
                         yield break;
                     }
 
@@ -79,6 +84,7 @@ namespace Assets.ApplicationStates
                         switch (genericPlaybackState.currently_playing_type)
                         {
                             case "unknown":
+                                EnablePlayPauseButton(false);
                                 AttemptUpdatePlaybackState();
                                 yield break;
                             case "track":
@@ -99,6 +105,11 @@ namespace Assets.ApplicationStates
                                 CurrentPlaybackState.IsPlaying = playBackStatePodcast.is_playing;
                                 break;
 
+                            case "ad":
+                                EnablePlayPauseButton(false);
+                                CurrentPlaybackState.SongName = "Ad is playing...";
+                                AttemptUpdatePlaybackState();
+                                yield break;
                             default:
                                 Debug.LogError($"Song Type not recognised: {genericPlaybackState.currently_playing_type}");
                                 break;
@@ -171,8 +182,13 @@ namespace Assets.ApplicationStates
 
         public void EnablePlayPauseOverlay(bool isEnabled)
         {
-            if (!CurrentPlaybackState.canShowOverlay) return;
+            
             Manager.UIManager.EnablePlayPauseOverlay(isEnabled);
+        }
+
+        public void EnablePlayPauseButton(bool isEnabled)
+        {
+            Manager.UIManager.SetPlayPauseButtonVisible(isEnabled);
         }
 
         public void Logout()

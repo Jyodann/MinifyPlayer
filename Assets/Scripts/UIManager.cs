@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI SongNameText;
+    [SerializeField] private TextMeshProUGUI SongNameText, VersionNumber;
 
     [SerializeField] private RawImage SongAlbumArt;
 
@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject PlayPauseOverlay;
 
     [SerializeField] private Button PlayPauseButton;
+
     [SerializeField] private Button PinnedButton;
 
     [SerializeField] private Sprite PlayingSprite, PauseSprite, PinnedSprite, UnpinnedSprite;
@@ -160,6 +161,7 @@ public class UIManager : MonoBehaviour
                 item.DOFade(1f, .2f);
             }
             PlayPauseOverlayImage.DOFade(0.8f, .2f);
+            VersionNumber.DOFade(1f, .2f);
             PlayPauseOverlay.SetActive(isEnabled);
             return;
         }
@@ -169,7 +171,7 @@ public class UIManager : MonoBehaviour
             print(item.name);
             item.DOFade(0f, .3f);
         }
-
+        VersionNumber.DOFade(0f, .3f);
         PlayPauseOverlayImage.DOFade(0f, .2f).OnComplete(() =>
         {
             PlayPauseOverlay.SetActive(isEnabled);
@@ -181,8 +183,20 @@ public class UIManager : MonoBehaviour
         PlayPauseButton.image.sprite = isPlaying ? PauseSprite : PlayingSprite;
     }
 
+    public void SetPlayPauseButtonVisible(bool isVisible)
+    {
+        PlayPauseButton.gameObject.SetActive(isVisible);
+    }
+
     public void SetPinnedButtonState(bool isPinned)
     {
         PinnedButton.image.sprite = isPinned ? UnpinnedSprite : PinnedSprite;
     }
+
+    public void SetVersionText(string text)
+    {
+        VersionNumber.text = text;
+    }
+
+
 }

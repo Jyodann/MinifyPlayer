@@ -106,6 +106,5 @@ public class MainManager : MonoBehaviour
     public void CloseWindow()
     {
         MainState.CloseWindow();
-       
     }
 }
