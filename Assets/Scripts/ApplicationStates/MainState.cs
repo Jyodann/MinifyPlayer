@@ -48,8 +48,10 @@ namespace Assets.ApplicationStates
 
         private IEnumerator UpdatePlaybackState()
         {
+            Debug.Log("Attempt Update");
             yield return new WaitForSeconds(1f);
-            using (var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/player?additional_types=episode,track", MainManager.RequestMethods.GET))
+
+            using (var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/player/currently-playing?additional_types=episode,track", MainManager.RequestMethods.GET))
             {
                 yield return request.SendWebRequest();
 
@@ -164,6 +166,20 @@ namespace Assets.ApplicationStates
             MainManager.Instance.StartCoroutine(PausePlay());
         }
 
+        public void AttemptSkipSong(bool playNextSong)
+        {
+            MainManager.Instance.StartCoroutine(SkipSong(playNextSong));
+        }
+
+        private IEnumerator SkipSong(bool playNextSong)
+        {
+            var url = playNextSong ? "https://api.spotify.com/v1/me/player/next" : "https://api.spotify.com/v1/me/player/previous";
+            using (var request = MainManager.Instance.GetUnityWebRequestObject(url, MainManager.RequestMethods.POST))
+            {
+                yield return request.SendWebRequest();
+            }
+        }
+
         private IEnumerator PausePlay()
         {
             var url = CurrentPlaybackState.IsPlaying ? "https://api.spotify.com/v1/me/player/pause" : "https://api.spotify.com/v1/me/player/play";
@@ -182,7 +198,6 @@ namespace Assets.ApplicationStates
 
         public void EnablePlayPauseOverlay(bool isEnabled)
         {
-            
             Manager.UIManager.EnablePlayPauseOverlay(isEnabled);
         }
 

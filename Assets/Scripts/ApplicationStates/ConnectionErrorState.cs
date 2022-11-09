@@ -50,7 +50,6 @@ namespace Assets.ApplicationStates
                             yield break;
                         }
 
-                        
                         ConnectBack();
                         yield break;
                     }

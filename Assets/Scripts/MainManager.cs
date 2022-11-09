@@ -87,6 +87,18 @@ public class MainManager : MonoBehaviour
         MainState.AttemptPausePlay();
     }
 
+    // Tied to NextSongButton OnClick()
+    public void AttemptPlayNextSong()
+    {
+        MainState.AttemptSkipSong(true);
+    }
+
+    // Tied to PreviousButton OnClick()
+    public void AttemptPlayPreviousSong()
+    {
+        MainState.AttemptSkipSong(false);
+    }
+
     // Tied to Logout Button OnClick()
     public void Logout()
     {

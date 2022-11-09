@@ -35,7 +35,7 @@ public class LoginManager : MonoBehaviour
     // Opens the GET Request for Callback to Application:
     public void OpenLoginPrompt()
     {
-        Application.OpenURL($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={redirectUrl}&scope=user-read-playback-state user-modify-playback-state user-read-currently-playing");
+        Application.OpenURL($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={redirectUrl}&scope=user-modify-playback-state user-read-currently-playing");
     }
 
     public void GetToken()
