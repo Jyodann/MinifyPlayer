@@ -119,4 +119,9 @@ public class MainManager : MonoBehaviour
     {
         MainState.CloseWindow();
     }
+
+    public void PlayOnSpotify()
+    {
+        MainState.PlayOnSpotify();
+    }
 }

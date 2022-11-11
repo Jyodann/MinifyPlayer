@@ -20,9 +20,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject PlayPauseOverlay;
 
-    [SerializeField] private Button PlayPauseButton;
-
-    [SerializeField] private Button PinnedButton;
+    [SerializeField] private Button PlayPauseButton, PinnedButton, NextSongButton, PreviousSongButton, ListenSpotifyButton;
 
     [SerializeField] private Sprite PlayingSprite, PauseSprite, PinnedSprite, UnpinnedSprite;
 
@@ -160,7 +158,7 @@ public class UIManager : MonoBehaviour
                 print(item.name);
                 item.DOFade(1f, .2f);
             }
-            PlayPauseOverlayImage.DOFade(0.8f, .2f);
+            PlayPauseOverlayImage.DOFade(1f, .2f);
             VersionNumber.DOFade(1f, .2f);
             PlayPauseOverlay.SetActive(isEnabled);
             return;
@@ -186,6 +184,9 @@ public class UIManager : MonoBehaviour
     public void SetPlayPauseButtonVisible(bool isVisible)
     {
         PlayPauseButton.gameObject.SetActive(isVisible);
+        NextSongButton.gameObject.SetActive(isVisible);
+        PreviousSongButton.gameObject.SetActive(isVisible);
+        ListenSpotifyButton.gameObject.SetActive(isVisible);
     }
 
     public void SetPinnedButtonState(bool isPinned)
@@ -201,5 +202,10 @@ public class UIManager : MonoBehaviour
     public void SetLoginErrorText(string text)
     {
         LoginErrorText.text = text;
+    }
+
+    public void EmptyMinifyCodeText()
+    {
+        TokenInputUI.text = string.Empty;
     }
 }
