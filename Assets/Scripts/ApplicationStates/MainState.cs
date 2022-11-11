@@ -26,7 +26,7 @@ namespace Assets.ApplicationStates
 
             Manager.UIManager.SetPinnedButtonState(Manager.WindowManager.LoadPinnedState());
             Manager.WindowManager.PinWindowToTop(Manager.WindowManager.LoadPinnedState());
-            Manager.UIManager.SetVersionText($"{Application.productName} v{Application.version}");
+            
         }
 
         public override void Exit()

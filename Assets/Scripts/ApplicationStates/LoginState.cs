@@ -12,6 +12,7 @@ namespace Assets.ApplicationStates
         {
             Manager.UIManager.ShowUI(UIManager.UI.Login);
             MainManager.Instance.UIManager.SetLoginErrorText(string.Empty);
+            Manager.UIManager.SetVersionText($"{Application.productName} v{Application.version}");
             if (Manager.LoginManager.GetRefreshTokenFromMemory(out var token))
             {
                 Debug.Log(token);

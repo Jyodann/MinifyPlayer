@@ -203,4 +203,9 @@ public class UIManager : MonoBehaviour
     {
         LoginErrorText.text = text;
     }
+
+    public void EmptyMinifyCodeText()
+    {
+        TokenInputUI.text = string.Empty;
+    }
 }

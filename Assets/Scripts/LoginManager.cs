@@ -71,6 +71,7 @@ public class LoginManager : MonoBehaviour
 
                 MainManager.Instance.LoginManager.AuthToken = authToken;
                 PlayerPrefs.SetString("refresh_token", authToken.refresh_token);
+                MainManager.Instance.UIManager.EmptyMinifyCodeText();
                 MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
                 yield break;
             }
