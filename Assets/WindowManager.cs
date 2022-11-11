@@ -13,6 +13,7 @@ public class WindowManager : MonoBehaviour
         KeepWindowOnTop = GetComponent<KeepWindowOnTop>();
         WindowScript = GetComponent<WindowScript>();
 
+        
 #if !UNITY_EDITOR && UNITY_STANDALONE_WIN
         
         WindowScript.OnNoBorderBtnClick();

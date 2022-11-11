@@ -1,5 +1,6 @@
 ﻿using Assets.JsonModels;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -96,6 +97,8 @@ namespace Assets.ApplicationStates
                                 CurrentPlaybackState.AlbumArtURL = playBackStateSong.item.album.images[0].url;
                                 CurrentPlaybackState.Artists = string.Join(", ", playBackStateSong.item.artists.Select(x => x.name));
                                 CurrentPlaybackState.IsPlaying = playBackStateSong.is_playing;
+                                CurrentPlaybackState.SpotifyUrlString = playBackStateSong.item.external_urls.spotify;
+
                                 break;
 
                             case "episode":
@@ -105,6 +108,7 @@ namespace Assets.ApplicationStates
                                 CurrentPlaybackState.AlbumArtURL = playBackStatePodcast.item.images[0].url;
                                 CurrentPlaybackState.Artists = string.Join(", ", playBackStatePodcast.item.show.publisher);
                                 CurrentPlaybackState.IsPlaying = playBackStatePodcast.is_playing;
+                                CurrentPlaybackState.SpotifyUrlString = playBackStatePodcast.item.external_urls.spotify;
                                 break;
 
                             case "ad":
@@ -229,6 +233,12 @@ namespace Assets.ApplicationStates
         internal void CloseWindow()
         {
             Application.Quit();
+        }
+
+        internal void PlayOnSpotify()
+        {
+            if (string.IsNullOrEmpty(CurrentPlaybackState.SpotifyUrlString )) return;
+            Application.OpenURL(Uri.EscapeUriString(CurrentPlaybackState.SpotifyUrlString));
         }
     }
 }

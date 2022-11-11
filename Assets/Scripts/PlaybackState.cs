@@ -12,6 +12,8 @@
 
         public bool canShowOverlay { get; set; } = false;
 
+        public string SpotifyUrlString { get; set; } = string.Empty;
+
         public PlaybackState()
         {
         }

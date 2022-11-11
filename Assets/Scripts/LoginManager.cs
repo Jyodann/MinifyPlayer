@@ -1,5 +1,6 @@
 using Assets;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -35,7 +36,7 @@ public class LoginManager : MonoBehaviour
     // Opens the GET Request for Callback to Application:
     public void OpenLoginPrompt()
     {
-        Application.OpenURL($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={redirectUrl}&scope=user-modify-playback-state user-read-currently-playing");
+        Application.OpenURL(Uri.EscapeUriString( $"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={redirectUrl}&scope=user-modify-playback-state user-read-currently-playing" ));
     }
 
     public void GetToken()
