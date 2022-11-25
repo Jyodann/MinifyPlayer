@@ -6,31 +6,16 @@ namespace Assets.Managers
 {
     public class MainManager : MonoBehaviour
     {
+        public enum RequestMethods
+        {
+            GET,
+
+            POST,
+
+            PUT
+        }
+
         public static MainManager Instance { get; private set; }
-
-        #region Managers
-
-        [HideInInspector] public LoginManager LoginManager;
-
-        [HideInInspector] public UIManager UIManager;
-
-        [HideInInspector] public MarqueeManager MarqueeManager;
-
-        #endregion Managers
-
-        #region StateMachine
-
-        public StateMachine<MainManager> ApplicationState;
-
-        public LoginState LoginState;
-
-        public ConnectionErrorState ConnectionErrorState;
-
-        public MainState MainState;
-
-        public WindowManager WindowManager;
-
-        #endregion StateMachine
 
         private void Awake()
         {
@@ -71,15 +56,6 @@ namespace Assets.Managers
             webRequest.SetRequestHeader("Authorization", $"Bearer {LoginManager.AuthToken.access_token}");
             webRequest.SetRequestHeader("Content-Type", "application/json");
             return webRequest;
-        }
-
-        public enum RequestMethods
-        {
-            GET,
-
-            POST,
-
-            PUT,
         }
 
         // Tied to PlayPauseButton OnClick()
@@ -125,5 +101,29 @@ namespace Assets.Managers
         {
             MainState.PlayOnSpotify();
         }
+
+        #region Managers
+
+        [HideInInspector] public LoginManager LoginManager;
+
+        [HideInInspector] public UIManager UIManager;
+
+        [HideInInspector] public MarqueeManager MarqueeManager;
+
+        #endregion Managers
+
+        #region StateMachine
+
+        public StateMachine<MainManager> ApplicationState;
+
+        public LoginState LoginState;
+
+        public ConnectionErrorState ConnectionErrorState;
+
+        public MainState MainState;
+
+        public WindowManager WindowManager;
+
+        #endregion StateMachine
     }
 }

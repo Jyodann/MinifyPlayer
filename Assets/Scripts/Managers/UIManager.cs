@@ -1,6 +1,6 @@
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -10,6 +10,24 @@ namespace Assets.Managers
 {
     public class UIManager : MonoBehaviour
     {
+        public enum AlbumArtIcons
+        {
+            MusicOn,
+
+            MusicOff,
+
+            Search
+        }
+
+        public enum UI
+        {
+            Login,
+
+            Main,
+
+            ConnectionError
+        }
+
         [SerializeField] private TextMeshProUGUI SongNameText, VersionNumber, LoginErrorText;
 
         [SerializeField] private RawImage SongAlbumArt;
@@ -22,17 +40,18 @@ namespace Assets.Managers
 
         [SerializeField] private GameObject PlayPauseOverlay;
 
-        [SerializeField] private Button PlayPauseButton, PinnedButton, NextSongButton, PreviousSongButton, ListenSpotifyButton;
+        [SerializeField]
+        private Button PlayPauseButton, PinnedButton, NextSongButton, PreviousSongButton, ListenSpotifyButton;
 
         [SerializeField] private Sprite PlayingSprite, PauseSprite, PinnedSprite, UnpinnedSprite;
 
         [SerializeField] private Texture2D MusicOn, MusicOff, Search;
 
-        private Image PlayPauseOverlayImage;
-
         private readonly List<Image> AllImages = new();
 
-        public string TokenInput { get => TokenInputUI.text; }
+        private Image PlayPauseOverlayImage;
+
+        public string TokenInput => TokenInputUI.text;
 
         private void Start()
         {
@@ -41,24 +60,6 @@ namespace Assets.Managers
             AllImages.AddRange(PlayPauseOverlay.GetComponentsInChildren<Image>(true));
 
             AllImages.Remove(PlayPauseOverlayImage);
-        }
-
-        public enum UI
-        {
-            Login,
-
-            Main,
-
-            ConnectionError
-        }
-
-        public enum AlbumArtIcons
-        {
-            MusicOn,
-
-            MusicOff,
-
-            Search
         }
 
         private Texture2D GetAlbumArtIcon(AlbumArtIcons icons)
@@ -73,9 +74,6 @@ namespace Assets.Managers
 
                 case AlbumArtIcons.Search:
                     return Search;
-
-                default:
-                    break;
             }
 
             return null;
@@ -83,12 +81,12 @@ namespace Assets.Managers
 
         public void ShowUI(UI selectedUI)
         {
-            string uiString = selectedUI switch
+            var uiString = selectedUI switch
             {
                 UI.Login => "LoginUI",
                 UI.Main => "MainUI",
                 UI.ConnectionError => "NetworkUnreachableUI",
-                _ => "None",
+                _ => "None"
             };
             ShowUI(uiString);
         }
@@ -101,11 +99,13 @@ namespace Assets.Managers
                 if (item.name == name) selectedUI = item;
                 item.SetActive(false);
             }
+
             if (selectedUI == null)
             {
                 Debug.LogError($"UI of {name} not found");
                 return;
             }
+
             selectedUI.SetActive(true);
         }
 
@@ -125,7 +125,10 @@ namespace Assets.Managers
             SongAlbumArt.texture = GetAlbumArtIcon(icon);
         }
 
-        public void SetProceedButtonEnabled(bool isEnabled) => ProceedButton.interactable = isEnabled;
+        public void SetProceedButtonEnabled(bool isEnabled)
+        {
+            ProceedButton.interactable = isEnabled;
+        }
 
         private IEnumerator GetRemoteTexture(string uri)
         {
@@ -142,10 +145,7 @@ namespace Assets.Managers
         {
             if (isEnabled)
             {
-                foreach (var item in AllImages)
-                {
-                    item.DOFade(1f, .2f);
-                }
+                foreach (var item in AllImages) item.DOFade(1f, .2f);
                 PlayPauseOverlayImage.DOFade(1f, .2f);
                 VersionNumber.DOFade(1f, .2f);
                 PlayPauseOverlay.SetActive(isEnabled);
@@ -157,11 +157,9 @@ namespace Assets.Managers
                 print(item.name);
                 item.DOFade(0f, .3f);
             }
+
             VersionNumber.DOFade(0f, .3f);
-            PlayPauseOverlayImage.DOFade(0f, .2f).OnComplete(() =>
-            {
-                PlayPauseOverlay.SetActive(isEnabled);
-            });
+            PlayPauseOverlayImage.DOFade(0f, .2f).OnComplete(() => { PlayPauseOverlay.SetActive(isEnabled); });
         }
 
         public void SetPlayPauseButtonState(bool isPlaying)

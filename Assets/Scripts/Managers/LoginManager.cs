@@ -1,7 +1,7 @@
-using Assets.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
+using Assets.Models;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -9,23 +9,21 @@ namespace Assets.Managers
 {
     public class LoginManager : MonoBehaviour
     {
-        private AuthToken authToken = new();
+        public bool isTokenExpired;
 
-        public bool isAuthorized { get; private set; }
-
-        public bool isTokenExpired = false;
+        public string client_id = "9830ce611cad40ab98aaca36e75c0b79";
 
         private string baseUrl = string.Empty;
 
-        private string RedirectUrl { get => $"{baseUrl}/callback"; }
+        public bool isAuthorized { get; private set; }
 
-        private string GetTokenUrl { get => $"{baseUrl}/gettoken"; }
+        private string RedirectUrl => $"{baseUrl}/callback";
 
-        private string refreshTokenUrl { get => $"{baseUrl}/refreshtoken"; }
+        private string GetTokenUrl => $"{baseUrl}/gettoken";
 
-        internal AuthToken AuthToken { get => authToken; set => authToken = value; }
+        private string refreshTokenUrl => $"{baseUrl}/refreshtoken";
 
-        public string client_id = "9830ce611cad40ab98aaca36e75c0b79";
+        internal AuthToken AuthToken { get; set; } = new();
 
         private void Awake()
         {
@@ -33,14 +31,15 @@ namespace Assets.Managers
 #if UNITY_EDITOR
             baseUrl = "https://localhost:7252";
 #else
-        baseUrl = "https://r59741kpgh.execute-api.ap-southeast-1.amazonaws.com/prod";
+            baseUrl = "https://r59741kpgh.execute-api.ap-southeast-1.amazonaws.com/prod";
 #endif
         }
 
         // Opens the GET Request for Callback to Application:
         public void OpenLoginPrompt()
         {
-            Application.OpenURL(Uri.EscapeUriString($"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={RedirectUrl}&scope=user-modify-playback-state user-read-currently-playing"));
+            Application.OpenURL(Uri.EscapeUriString(
+                $"https://accounts.spotify.com/authorize?client_id={client_id}&response_type=code&redirect_uri={RedirectUrl}&scope=user-modify-playback-state user-read-currently-playing"));
         }
 
         public void GetToken()
@@ -66,7 +65,8 @@ namespace Assets.Managers
                 if (authToken.access_token == null)
                 {
                     Debug.LogError("Access Token invalid");
-                    MainManager.Instance.UIManager.SetLoginErrorText("Unable to verify code. Please try to login again.");
+                    MainManager.Instance.UIManager.SetLoginErrorText(
+                        "Unable to verify code. Please try to login again.");
                     yield break;
                 }
 
@@ -76,6 +76,7 @@ namespace Assets.Managers
                 MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
                 yield break;
             }
+
             MainManager.Instance.UIManager.SetLoginErrorText("No Internet Connection.\nPlease try again.");
         }
 
@@ -102,17 +103,17 @@ namespace Assets.Managers
 
                 MainManager.Instance.LoginManager.AuthToken.access_token = authToken.access_token;
 
-                if (refreshLogin)
-                {
-                    MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
-                }
+                if (refreshLogin) MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.MainState);
                 yield break;
             }
 
             MainManager.Instance.UIManager.SetLoginErrorText("No Internet Connection.\nPlease try again.");
         }
 
-        public void SetRefreshToken(string token) => AuthToken.refresh_token = token;
+        public void SetRefreshToken(string token)
+        {
+            AuthToken.refresh_token = token;
+        }
 
         public void InValidateToken()
         {

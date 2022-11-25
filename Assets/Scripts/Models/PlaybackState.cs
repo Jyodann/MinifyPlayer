@@ -14,10 +14,6 @@
 
         public string SpotifyUrlString { get; set; } = string.Empty;
 
-        internal PlaybackState()
-        {
-        }
-
         public bool CheckForDifference(PlaybackState otherPlayback)
         {
             return SongName == otherPlayback.SongName;

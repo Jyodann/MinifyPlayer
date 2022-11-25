@@ -1,10 +1,10 @@
-﻿using Assets.JsonModels;
+﻿using System;
+using System.Collections;
+using System.Linq;
+using Assets.JsonModels;
 using Assets.Managers;
 using Assets.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -12,9 +12,8 @@ namespace Assets.ApplicationStates
 {
     public class MainState : State<MainManager>
     {
-        private PlaybackState CurrentPlaybackState = new();
-
         private readonly PlaybackState PreviousPlaybackState = new();
+        private PlaybackState CurrentPlaybackState = new();
 
         public MainState(StateMachine<MainManager> SM, MainManager manager) : base(SM, manager)
         {
@@ -52,7 +51,9 @@ namespace Assets.ApplicationStates
         {
             yield return new WaitForSeconds(1f);
 
-            using var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/player/currently-playing?additional_types=episode,track", MainManager.RequestMethods.GET);
+            using var request = MainManager.Instance.GetUnityWebRequestObject(
+                "https://api.spotify.com/v1/me/player/currently-playing?additional_types=episode,track",
+                MainManager.RequestMethods.GET);
             yield return request.SendWebRequest();
 
             EnablePlayPauseButton(true);
@@ -68,7 +69,8 @@ namespace Assets.ApplicationStates
                 {
                     Debug.LogWarning("Spotify Instance Disconnected");
 
-                    Manager.UIManager.SetSongName("Spotify not currently playing. Try playing a song to resume Miniplayer!");
+                    Manager.UIManager.SetSongName(
+                        "Spotify not currently playing. Try playing a song to resume Miniplayer!");
                     CurrentPlaybackState.CanShowOverlay = false;
                     Manager.UIManager.SetAlbumArt(UIManager.AlbumArtIcons.MusicOff);
                     AttemptUpdatePlaybackState();
@@ -80,7 +82,7 @@ namespace Assets.ApplicationStates
                 {
                     //Gets the Current Playing Type
                     var genericPlaybackState = JsonConvert.DeserializeObject<PlaybackStateGeneric>(
-                    request.downloadHandler.text);
+                        request.downloadHandler.text);
                     MainManager.Instance.UIManager.SetPlayPauseButtonState(genericPlaybackState.is_playing);
 
                     switch (genericPlaybackState.currently_playing_type)
@@ -90,18 +92,21 @@ namespace Assets.ApplicationStates
                             AttemptUpdatePlaybackState();
                             yield break;
                         case "track":
-                            var playBackStateSong = JsonConvert.DeserializeObject<PlaybackStateSong>(request.downloadHandler.text);
+                            var playBackStateSong =
+                                JsonConvert.DeserializeObject<PlaybackStateSong>(request.downloadHandler.text);
 
                             CurrentPlaybackState.SongName = playBackStateSong.item.name;
                             CurrentPlaybackState.AlbumArtURL = playBackStateSong.item.album.images[0].url;
-                            CurrentPlaybackState.Artists = string.Join(", ", playBackStateSong.item.artists.Select(x => x.name));
+                            CurrentPlaybackState.Artists =
+                                string.Join(", ", playBackStateSong.item.artists.Select(x => x.name));
                             CurrentPlaybackState.IsPlaying = playBackStateSong.is_playing;
                             CurrentPlaybackState.SpotifyUrlString = playBackStateSong.item.external_urls.spotify;
 
                             break;
 
                         case "episode":
-                            var playBackStatePodcast = JsonConvert.DeserializeObject<PlaybackStatePodcast>(request.downloadHandler.text);
+                            var playBackStatePodcast =
+                                JsonConvert.DeserializeObject<PlaybackStatePodcast>(request.downloadHandler.text);
 
                             CurrentPlaybackState.SongName = playBackStatePodcast.item.name;
                             CurrentPlaybackState.AlbumArtURL = playBackStatePodcast.item.images[0].url;
@@ -146,7 +151,7 @@ namespace Assets.ApplicationStates
 
                     AttemptUpdatePlaybackState();
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Debug.LogException(e);
                     AttemptUpdatePlaybackState();
@@ -159,7 +164,6 @@ namespace Assets.ApplicationStates
             {
                 MainManager.Instance.LoginManager.RefreshToken(false);
                 AttemptUpdatePlaybackState();
-                yield break;
             }
         }
 
@@ -175,14 +179,18 @@ namespace Assets.ApplicationStates
 
         private IEnumerator SkipSong(bool playNextSong)
         {
-            var url = playNextSong ? "https://api.spotify.com/v1/me/player/next" : "https://api.spotify.com/v1/me/player/previous";
+            var url = playNextSong
+                ? "https://api.spotify.com/v1/me/player/next"
+                : "https://api.spotify.com/v1/me/player/previous";
             using var request = MainManager.Instance.GetUnityWebRequestObject(url, MainManager.RequestMethods.POST);
             yield return request.SendWebRequest();
         }
 
         private IEnumerator PausePlay()
         {
-            var url = CurrentPlaybackState.IsPlaying ? "https://api.spotify.com/v1/me/player/pause" : "https://api.spotify.com/v1/me/player/play";
+            var url = CurrentPlaybackState.IsPlaying
+                ? "https://api.spotify.com/v1/me/player/pause"
+                : "https://api.spotify.com/v1/me/player/play";
             using var request = MainManager.Instance.GetUnityWebRequestObject(url, MainManager.RequestMethods.PUT);
             yield return request.SendWebRequest();
         }

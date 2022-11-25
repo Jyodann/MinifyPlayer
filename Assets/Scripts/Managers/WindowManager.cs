@@ -17,8 +17,7 @@ namespace Assets.Managers
             WindowScript = GetComponent<WindowScript>();
 
 #if !UNITY_EDITOR && UNITY_STANDALONE_WIN
-
-        WindowScript.OnNoBorderBtnClick();
+            WindowScript.OnNoBorderBtnClick();
 #endif
         }
 
