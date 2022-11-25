@@ -57,8 +57,6 @@ namespace Assets.Managers
             using var request = UnityWebRequest.Get($"{GetTokenUrl}?code={token}&redirect_url={RedirectUrl}");
             yield return request.SendWebRequest();
 
-            print($"{GetTokenUrl}?code={token}&redirect_url={RedirectUrl}");
-            print(request.result.ToString());
             MainManager.Instance.UIManager.SetProceedButtonEnabled(true);
 
             if (request.result == UnityWebRequest.Result.Success)
@@ -94,7 +92,7 @@ namespace Assets.Managers
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);
-                print(request.downloadHandler.text);
+
                 if (authToken.access_token == null)
                 {
                     Debug.LogError("Access Token invalid");
@@ -130,4 +128,3 @@ namespace Assets.Managers
         }
     }
 }
-

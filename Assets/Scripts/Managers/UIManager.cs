@@ -9,194 +9,192 @@ using UnityEngine.UI;
 namespace Assets.Managers
 {
     public class UIManager : MonoBehaviour
-{
-    [SerializeField] private TextMeshProUGUI SongNameText, VersionNumber, LoginErrorText;
-
-    [SerializeField] private RawImage SongAlbumArt;
-
-    [SerializeField] private TMP_InputField TokenInputUI;
-
-    [SerializeField] private Button ProceedButton;
-
-    [SerializeField] private GameObject[] UIs;
-
-    [SerializeField] private GameObject PlayPauseOverlay;
-
-    [SerializeField] private Button PlayPauseButton, PinnedButton, NextSongButton, PreviousSongButton, ListenSpotifyButton;
-
-    [SerializeField] private Sprite PlayingSprite, PauseSprite, PinnedSprite, UnpinnedSprite;
-
-    [SerializeField] private Texture2D MusicOn, MusicOff, Search;
-
-    private Image PlayPauseOverlayImage;
-
-    private readonly List<Image> AllImages = new();
-
-    public string TokenInput { get => TokenInputUI.text; }
-
-    private void Start()
     {
-        PlayPauseOverlayImage = PlayPauseOverlay.GetComponent<Image>();
+        [SerializeField] private TextMeshProUGUI SongNameText, VersionNumber, LoginErrorText;
 
-        AllImages.AddRange(PlayPauseOverlay.GetComponentsInChildren<Image>(true));
+        [SerializeField] private RawImage SongAlbumArt;
 
-        AllImages.Remove(PlayPauseOverlayImage);
-    }
+        [SerializeField] private TMP_InputField TokenInputUI;
 
-    public enum UI
-    {
-        Login,
+        [SerializeField] private Button ProceedButton;
 
-        Main,
+        [SerializeField] private GameObject[] UIs;
 
-        ConnectionError
-    }
+        [SerializeField] private GameObject PlayPauseOverlay;
 
-    public enum AlbumArtIcons
-    {
-        MusicOn,
+        [SerializeField] private Button PlayPauseButton, PinnedButton, NextSongButton, PreviousSongButton, ListenSpotifyButton;
 
-        MusicOff,
+        [SerializeField] private Sprite PlayingSprite, PauseSprite, PinnedSprite, UnpinnedSprite;
 
-        Search
-    }
+        [SerializeField] private Texture2D MusicOn, MusicOff, Search;
 
-    private Texture2D GetAlbumArtIcon(AlbumArtIcons icons)
-    {
-        switch (icons)
+        private Image PlayPauseOverlayImage;
+
+        private readonly List<Image> AllImages = new();
+
+        public string TokenInput { get => TokenInputUI.text; }
+
+        private void Start()
         {
-            case AlbumArtIcons.MusicOn:
-                return MusicOn;
+            PlayPauseOverlayImage = PlayPauseOverlay.GetComponent<Image>();
 
-            case AlbumArtIcons.MusicOff:
-                return MusicOff;
+            AllImages.AddRange(PlayPauseOverlay.GetComponentsInChildren<Image>(true));
 
-            case AlbumArtIcons.Search:
-                return Search;
-
-            default:
-                break;
+            AllImages.Remove(PlayPauseOverlayImage);
         }
 
-        return null;
-    }
-
-    public void ShowUI(UI selectedUI)
-    {
-        string uiString = selectedUI switch
+        public enum UI
         {
-            UI.Login => "LoginUI",
-            UI.Main => "MainUI",
-            UI.ConnectionError => "NetworkUnreachableUI",
-            _ => "None",
-        };
-        ShowUI(uiString);
-    }
+            Login,
 
-    private void ShowUI(string name)
-    {
-        GameObject selectedUI = null;
-        foreach (var item in UIs)
-        {
-            if (item.name == name) selectedUI = item;
-            item.SetActive(false);
+            Main,
+
+            ConnectionError
         }
-        if (selectedUI == null)
+
+        public enum AlbumArtIcons
         {
-            Debug.LogError($"UI of {name} not found");
-            return;
+            MusicOn,
+
+            MusicOff,
+
+            Search
         }
-        selectedUI.SetActive(true);
-    }
 
-    public void SetSongName(string name)
-    {
-        SongNameText.text = name;
-        MainManager.Instance.MarqueeManager.IsNewSong = true;
-    }
-
-    public void SetAlbumArt(string url)
-    {
-        StartCoroutine(GetRemoteTexture(url));
-    }
-
-    public void SetAlbumArt(AlbumArtIcons icon)
-    {
-        SongAlbumArt.texture = GetAlbumArtIcon(icon);
-    }
-
-    public void SetProceedButtonEnabled(bool isEnabled) => ProceedButton.interactable = isEnabled;
-
-    private IEnumerator GetRemoteTexture(string uri)
-    {
-        Debug.Log("UIManager Downloaded New Textures");
-        using var request = UnityWebRequestTexture.GetTexture(uri);
-        yield return request.SendWebRequest();
-
-        if (request.result != UnityWebRequest.Result.Success)
-            yield break;
-
-        SongAlbumArt.texture = DownloadHandlerTexture.GetContent(request);
-    }
-
-    public void EnablePlayPauseOverlay(bool isEnabled)
-    {
-        if (isEnabled)
+        private Texture2D GetAlbumArtIcon(AlbumArtIcons icons)
         {
+            switch (icons)
+            {
+                case AlbumArtIcons.MusicOn:
+                    return MusicOn;
+
+                case AlbumArtIcons.MusicOff:
+                    return MusicOff;
+
+                case AlbumArtIcons.Search:
+                    return Search;
+
+                default:
+                    break;
+            }
+
+            return null;
+        }
+
+        public void ShowUI(UI selectedUI)
+        {
+            string uiString = selectedUI switch
+            {
+                UI.Login => "LoginUI",
+                UI.Main => "MainUI",
+                UI.ConnectionError => "NetworkUnreachableUI",
+                _ => "None",
+            };
+            ShowUI(uiString);
+        }
+
+        private void ShowUI(string name)
+        {
+            GameObject selectedUI = null;
+            foreach (var item in UIs)
+            {
+                if (item.name == name) selectedUI = item;
+                item.SetActive(false);
+            }
+            if (selectedUI == null)
+            {
+                Debug.LogError($"UI of {name} not found");
+                return;
+            }
+            selectedUI.SetActive(true);
+        }
+
+        public void SetSongName(string name)
+        {
+            SongNameText.text = name;
+            MainManager.Instance.MarqueeManager.IsNewSong = true;
+        }
+
+        public void SetAlbumArt(string url)
+        {
+            StartCoroutine(GetRemoteTexture(url));
+        }
+
+        public void SetAlbumArt(AlbumArtIcons icon)
+        {
+            SongAlbumArt.texture = GetAlbumArtIcon(icon);
+        }
+
+        public void SetProceedButtonEnabled(bool isEnabled) => ProceedButton.interactable = isEnabled;
+
+        private IEnumerator GetRemoteTexture(string uri)
+        {
+            using var request = UnityWebRequestTexture.GetTexture(uri);
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+                yield break;
+
+            SongAlbumArt.texture = DownloadHandlerTexture.GetContent(request);
+        }
+
+        public void EnablePlayPauseOverlay(bool isEnabled)
+        {
+            if (isEnabled)
+            {
+                foreach (var item in AllImages)
+                {
+                    item.DOFade(1f, .2f);
+                }
+                PlayPauseOverlayImage.DOFade(1f, .2f);
+                VersionNumber.DOFade(1f, .2f);
+                PlayPauseOverlay.SetActive(isEnabled);
+                return;
+            }
+
             foreach (var item in AllImages)
             {
                 print(item.name);
-                item.DOFade(1f, .2f);
+                item.DOFade(0f, .3f);
             }
-            PlayPauseOverlayImage.DOFade(1f, .2f);
-            VersionNumber.DOFade(1f, .2f);
-            PlayPauseOverlay.SetActive(isEnabled);
-            return;
+            VersionNumber.DOFade(0f, .3f);
+            PlayPauseOverlayImage.DOFade(0f, .2f).OnComplete(() =>
+            {
+                PlayPauseOverlay.SetActive(isEnabled);
+            });
         }
 
-        foreach (var item in AllImages)
+        public void SetPlayPauseButtonState(bool isPlaying)
         {
-            print(item.name);
-            item.DOFade(0f, .3f);
+            PlayPauseButton.image.sprite = isPlaying ? PauseSprite : PlayingSprite;
         }
-        VersionNumber.DOFade(0f, .3f);
-        PlayPauseOverlayImage.DOFade(0f, .2f).OnComplete(() =>
+
+        public void SetPlayPauseButtonVisible(bool isVisible)
         {
-            PlayPauseOverlay.SetActive(isEnabled);
-        });
-    }
+            PlayPauseButton.gameObject.SetActive(isVisible);
+            NextSongButton.gameObject.SetActive(isVisible);
+            PreviousSongButton.gameObject.SetActive(isVisible);
+            ListenSpotifyButton.gameObject.SetActive(isVisible);
+        }
 
-    public void SetPlayPauseButtonState(bool isPlaying)
-    {
-        PlayPauseButton.image.sprite = isPlaying ? PauseSprite : PlayingSprite;
-    }
+        public void SetPinnedButtonState(bool isPinned)
+        {
+            PinnedButton.image.sprite = isPinned ? UnpinnedSprite : PinnedSprite;
+        }
 
-    public void SetPlayPauseButtonVisible(bool isVisible)
-    {
-        PlayPauseButton.gameObject.SetActive(isVisible);
-        NextSongButton.gameObject.SetActive(isVisible);
-        PreviousSongButton.gameObject.SetActive(isVisible);
-        ListenSpotifyButton.gameObject.SetActive(isVisible);
-    }
+        public void SetVersionText(string text)
+        {
+            VersionNumber.text = text;
+        }
 
-    public void SetPinnedButtonState(bool isPinned)
-    {
-        PinnedButton.image.sprite = isPinned ? UnpinnedSprite : PinnedSprite;
-    }
+        public void SetLoginErrorText(string text)
+        {
+            LoginErrorText.text = text;
+        }
 
-    public void SetVersionText(string text)
-    {
-        VersionNumber.text = text;
+        public void EmptyMinifyCodeText()
+        {
+            TokenInputUI.text = string.Empty;
+        }
     }
-
-    public void SetLoginErrorText(string text)
-    {
-        LoginErrorText.text = text;
-    }
-
-    public void EmptyMinifyCodeText()
-    {
-        TokenInputUI.text = string.Empty;
-    }
-}
 }

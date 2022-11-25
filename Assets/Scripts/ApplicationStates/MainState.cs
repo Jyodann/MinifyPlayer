@@ -50,7 +50,6 @@ namespace Assets.ApplicationStates
 
         private IEnumerator UpdatePlaybackState()
         {
-            Debug.Log("Attempt Update");
             yield return new WaitForSeconds(1f);
 
             using var request = MainManager.Instance.GetUnityWebRequestObject("https://api.spotify.com/v1/me/player/currently-playing?additional_types=episode,track", MainManager.RequestMethods.GET);

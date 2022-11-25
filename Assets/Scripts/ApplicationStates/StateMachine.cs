@@ -1,6 +1,4 @@
-﻿using Assets.ApplicationStates;
-
-namespace Assets.ApplicationStates
+﻿namespace Assets.ApplicationStates
 {
     public class StateMachine<T>
     {

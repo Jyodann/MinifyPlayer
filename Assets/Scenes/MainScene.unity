@@ -629,9 +629,9 @@ GameObject:
   m_Component:
   - component: {fileID: 267030506}
   - component: {fileID: 267030511}
-  - component: {fileID: 267030510}
   - component: {fileID: 267030512}
   - component: {fileID: 267030514}
+  - component: {fileID: 267030513}
   m_Layer: 0
   m_Name: ApplicationManager
   m_TagString: Untagged
@@ -654,22 +654,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &267030510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267030505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4eeb2bc3725ae6429a8b10904105895, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LoginManager: {fileID: 0}
-  UIManager: {fileID: 0}
-  MarqueeManager: {fileID: 0}
-  WindowManager: {fileID: 13953403}
 --- !u!114 &267030511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,6 +703,22 @@ MonoBehaviour:
   MusicOn: {fileID: 2800000, guid: 74df8eea559369845b0694e23bbd003d, type: 3}
   MusicOff: {fileID: 2800000, guid: 80ca28480036eba4b9870cc513d93004, type: 3}
   Search: {fileID: 2800000, guid: be8e4b484d6027448861d537f9ec1814, type: 3}
+--- !u!114 &267030513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267030505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38018785982ab9d4d8b7249dbcf3358a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LoginManager: {fileID: 0}
+  UIManager: {fileID: 0}
+  MarqueeManager: {fileID: 0}
+  WindowManager: {fileID: 13953403}
 --- !u!114 &267030514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,7 +728,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 267030505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9af0503dd5eb04a4fbcde442737339e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b1fe2fc2eae55846a4e5114cdae28c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SongName: {fileID: 1178109204}
@@ -1193,8 +1193,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
+      - m_Target: {fileID: 267030513}
+        m_TargetAssemblyTypeName: Assets.Managers.MainManager, Assembly-CSharp
         m_MethodName: MinimiseWindow
         m_Mode: 1
         m_Arguments:
@@ -1326,8 +1326,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
+      - m_Target: {fileID: 267030513}
+        m_TargetAssemblyTypeName: Assets.Managers.MainManager, Assembly-CSharp
         m_MethodName: CloseWindow
         m_Mode: 1
         m_Arguments:
@@ -1676,8 +1676,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
+      - m_Target: {fileID: 267030513}
+        m_TargetAssemblyTypeName: Assets.Managers.MainManager, Assembly-CSharp
         m_MethodName: AttemptPlayNextSong
         m_Mode: 1
         m_Arguments:
@@ -1945,8 +1945,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
+      - m_Target: {fileID: 267030513}
+        m_TargetAssemblyTypeName: Assets.Managers.MainManager, Assembly-CSharp
         m_MethodName: PlayOnSpotify
         m_Mode: 1
         m_Arguments:
@@ -2772,7 +2772,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
         m_MethodName: CloseWindow
         m_Mode: 1
@@ -3108,7 +3108,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
         m_MethodName: MinimiseWindow
         m_Mode: 1
@@ -3241,8 +3241,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
+      - m_Target: {fileID: 267030513}
+        m_TargetAssemblyTypeName: Assets.Managers.MainManager, Assembly-CSharp
         m_MethodName: AttemptPlayPreviousSong
         m_Mode: 1
         m_Arguments:
@@ -3374,8 +3374,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
+      - m_Target: {fileID: 267030513}
+        m_TargetAssemblyTypeName: Assets.Managers.MainManager, Assembly-CSharp
         m_MethodName: Logout
         m_Mode: 1
         m_Arguments:
@@ -3847,8 +3847,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
+      - m_Target: {fileID: 267030513}
+        m_TargetAssemblyTypeName: Assets.Managers.MainManager, Assembly-CSharp
         m_MethodName: TogglePinState
         m_Mode: 1
         m_Arguments:
@@ -4160,8 +4160,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 267030510}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
+      - m_Target: {fileID: 267030513}
+        m_TargetAssemblyTypeName: Assets.Managers.MainManager, Assembly-CSharp
         m_MethodName: AttemptPlayPause
         m_Mode: 1
         m_Arguments:
