@@ -40,19 +40,17 @@ namespace Assets.ApplicationStates
                 if (TimeToAttempt == 0)
                 {
                     Debug.Log("Connecting back...");
-                    using (var response = Manager.GetUnityWebRequestObject("https://api.spotify.com/v1/me", MainManager.RequestMethods.GET))
+                    using var response = Manager.GetUnityWebRequestObject("https://api.spotify.com/v1/me", MainManager.RequestMethods.GET);
+                    yield return response.SendWebRequest();
+                    TimeToAttempt = 5;
+                    if (response.result != UnityEngine.Networking.UnityWebRequest.Result.ConnectionError)
                     {
-                        yield return response.SendWebRequest();
-                        TimeToAttempt = 5;
-                        if (response.result != UnityEngine.Networking.UnityWebRequest.Result.ConnectionError)
-                        {
-                            StateMachine.ChangeState(Manager.LoginState);
-                            yield break;
-                        }
-
-                        ConnectBack();
+                        StateMachine.ChangeState(Manager.LoginState);
                         yield break;
                     }
+
+                    ConnectBack();
+                    yield break;
                 }
             }
         }

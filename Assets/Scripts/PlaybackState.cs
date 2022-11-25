@@ -14,7 +14,7 @@
 
         public string SpotifyUrlString { get; set; } = string.Empty;
 
-        public PlaybackState()
+        internal PlaybackState()
         {
         }
 

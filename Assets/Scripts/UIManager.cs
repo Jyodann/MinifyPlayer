@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
 
     private Image PlayPauseOverlayImage;
 
-    private List<Image> AllImages = new List<Image>();
+    private List<Image> AllImages = new();
 
     public string TokenInput { get => TokenInputUI.text; }
 
@@ -71,6 +71,8 @@ public class UIManager : MonoBehaviour
 
             case AlbumArtIcons.Search:
                 return Search;
+            default:
+                break;
         }
 
         return null;
@@ -78,26 +80,13 @@ public class UIManager : MonoBehaviour
 
     public void ShowUI(UI selectedUI)
     {
-        string uiString;
-        switch (selectedUI)
+        string uiString = selectedUI switch
         {
-            case UI.Login:
-                uiString = "LoginUI";
-                break;
-
-            case UI.Main:
-                uiString = "MainUI";
-                break;
-
-            case UI.ConnectionError:
-                uiString = "NetworkUnreachableUI";
-                break;
-
-            default:
-                uiString = "None";
-                break;
-        }
-
+            UI.Login => "LoginUI",
+            UI.Main => "MainUI",
+            UI.ConnectionError => "NetworkUnreachableUI",
+            _ => "None",
+        };
         ShowUI(uiString);
     }
 
@@ -138,15 +127,13 @@ public class UIManager : MonoBehaviour
     private IEnumerator GetRemoteTexture(string uri)
     {
         Debug.Log("UIManager Downloaded New Textures");
-        using (var request = UnityWebRequestTexture.GetTexture(uri))
-        {
-            yield return request.SendWebRequest();
+        using var request = UnityWebRequestTexture.GetTexture(uri);
+        yield return request.SendWebRequest();
 
-            if (request.result == UnityWebRequest.Result.Success)
-            {
-                SongAlbumArt.texture = DownloadHandlerTexture.GetContent(request);
-            }
-        }
+        if (request.result != UnityWebRequest.Result.Success)
+        yield break;
+        
+        SongAlbumArt.texture = DownloadHandlerTexture.GetContent(request);
     }
 
     public void EnablePlayPauseOverlay(bool isEnabled)

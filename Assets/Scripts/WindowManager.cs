@@ -1,21 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WindowManager : MonoBehaviour
 {
     private readonly string PINNED_PLAYERPREF = "pinned_state";
+
     private KeepWindowOnTop KeepWindowOnTop;
+
     private WindowScript WindowScript;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         KeepWindowOnTop = GetComponent<KeepWindowOnTop>();
         WindowScript = GetComponent<WindowScript>();
 
-        
 #if !UNITY_EDITOR && UNITY_STANDALONE_WIN
-        
+
         WindowScript.OnNoBorderBtnClick();
 #endif
     }
@@ -32,7 +32,7 @@ public class WindowManager : MonoBehaviour
 
     public bool LoadPinnedState()
     {
-        return bool.Parse( PlayerPrefs.GetString(PINNED_PLAYERPREF, false.ToString()) );
+        return bool.Parse(PlayerPrefs.GetString(PINNED_PLAYERPREF, false.ToString()));
     }
 
     public void MinimiseWindow()

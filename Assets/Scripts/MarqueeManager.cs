@@ -50,7 +50,6 @@ public class MarqueeManager : MonoBehaviour
 
     private void RecalculateBounds()
     {
-        print($"Recalculating Boundaries: {songNameRect.sizeDelta.x}");
         StopAllCoroutines();
         Destroy(SongNameClone);
         if (songNameRect.sizeDelta.x < 0)
