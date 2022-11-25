@@ -1,4 +1,4 @@
-﻿namespace Assets
+﻿namespace Assets.JsonModels
 {
     public class CurrentUserProfile
     {

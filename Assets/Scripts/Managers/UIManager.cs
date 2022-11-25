@@ -6,7 +6,9 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+namespace Assets.Managers
+{
+    public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI SongNameText, VersionNumber, LoginErrorText;
 
@@ -28,7 +30,7 @@ public class UIManager : MonoBehaviour
 
     private Image PlayPauseOverlayImage;
 
-    private List<Image> AllImages = new();
+    private readonly List<Image> AllImages = new();
 
     public string TokenInput { get => TokenInputUI.text; }
 
@@ -71,6 +73,7 @@ public class UIManager : MonoBehaviour
 
             case AlbumArtIcons.Search:
                 return Search;
+
             default:
                 break;
         }
@@ -109,7 +112,7 @@ public class UIManager : MonoBehaviour
     public void SetSongName(string name)
     {
         SongNameText.text = name;
-        MainManager.Instance.MarqueeManager.isNewSong = true;
+        MainManager.Instance.MarqueeManager.IsNewSong = true;
     }
 
     public void SetAlbumArt(string url)
@@ -131,8 +134,8 @@ public class UIManager : MonoBehaviour
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
-        yield break;
-        
+            yield break;
+
         SongAlbumArt.texture = DownloadHandlerTexture.GetContent(request);
     }
 
@@ -195,4 +198,5 @@ public class UIManager : MonoBehaviour
     {
         TokenInputUI.text = string.Empty;
     }
+}
 }

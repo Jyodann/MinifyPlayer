@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class WindowManager : MonoBehaviour
+
+namespace Assets.Managers
+{
+    public class WindowManager : MonoBehaviour
 {
     private readonly string PINNED_PLAYERPREF = "pinned_state";
 
@@ -39,4 +42,5 @@ public class WindowManager : MonoBehaviour
     {
         WindowScript.OnMinimizeBtnClick();
     }
+}
 }

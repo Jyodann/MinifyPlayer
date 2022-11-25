@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Managers;
+using UnityEngine;
 
 namespace Assets.ApplicationStates
 {
@@ -14,9 +15,9 @@ namespace Assets.ApplicationStates
             MainManager.Instance.UIManager.SetLoginErrorText(string.Empty);
             Manager.UIManager.SetVersionText($"{Application.productName} v{Application.version}");
 
-            if (!Manager.LoginManager.GetRefreshTokenFromMemory(out var token)) 
+            if (!Manager.LoginManager.GetRefreshTokenFromMemory(out var token))
                 return;
-            
+
             MainManager.Instance.LoginManager.SetRefreshToken(token);
             MainManager.Instance.LoginManager.RefreshToken(true);
         }

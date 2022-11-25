@@ -1,4 +1,4 @@
-﻿namespace Assets
+﻿namespace Assets.Models
 {
     internal class PlaybackState
     {
@@ -10,7 +10,7 @@
 
         public bool IsPlaying { get; set; } = false;
 
-        public bool canShowOverlay { get; set; } = false;
+        public bool CanShowOverlay { get; set; } = false;
 
         public string SpotifyUrlString { get; set; } = string.Empty;
 

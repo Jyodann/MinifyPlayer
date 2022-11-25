@@ -1,9 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class MarqueeManager : MonoBehaviour
+
+namespace Assets.Managers
 {
-    public bool isNewSong { get; set; }
+    public class MarqueeManager : MonoBehaviour
+{
+    public bool IsNewSong { get; set; }
 
     [SerializeField] private GameObject SongName;
 
@@ -152,4 +155,5 @@ public class MarqueeManager : MonoBehaviour
             //songNameRect.localPosition += new Vector3(-increment, 0, 0);
         }
     }
+}
 }

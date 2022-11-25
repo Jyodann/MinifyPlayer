@@ -7,9 +7,9 @@ public class KeepWindowOnTop : MonoBehaviour
 #if UNITY_STANDALONE_WIN
 
     // https://stackoverflow.com/a/34703664/5452781
-    private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+    private static readonly IntPtr HWND_TOPMOST = new(-1);
 
-    private static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+    private static readonly IntPtr HWND_NOTOPMOST = new(-2);
 
     private const UInt32 SWP_NOSIZE = 0x0001;
 

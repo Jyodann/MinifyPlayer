@@ -1,4 +1,6 @@
 ﻿using Assets.JsonModels;
+using Assets.Managers;
+using Assets.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -12,7 +14,7 @@ namespace Assets.ApplicationStates
     {
         private PlaybackState CurrentPlaybackState = new();
 
-        private PlaybackState PreviousPlaybackState = new();
+        private readonly PlaybackState PreviousPlaybackState = new();
 
         public MainState(StateMachine<MainManager> SM, MainManager manager) : base(SM, manager)
         {
@@ -68,7 +70,7 @@ namespace Assets.ApplicationStates
                     Debug.LogWarning("Spotify Instance Disconnected");
 
                     Manager.UIManager.SetSongName("Spotify not currently playing. Try playing a song to resume Miniplayer!");
-                    CurrentPlaybackState.canShowOverlay = false;
+                    CurrentPlaybackState.CanShowOverlay = false;
                     Manager.UIManager.SetAlbumArt(UIManager.AlbumArtIcons.MusicOff);
                     AttemptUpdatePlaybackState();
                     EnablePlayPauseButton(false);
@@ -119,11 +121,11 @@ namespace Assets.ApplicationStates
                             break;
                     }
 
-                    if (!CurrentPlaybackState.canShowOverlay)
+                    if (!CurrentPlaybackState.CanShowOverlay)
                     {
                         SetAllUI(CurrentPlaybackState);
                         PreviousPlaybackState.CopyPlaybackState(CurrentPlaybackState);
-                        CurrentPlaybackState.canShowOverlay = true;
+                        CurrentPlaybackState.CanShowOverlay = true;
                     }
 
                     // If no previous state, set one:
