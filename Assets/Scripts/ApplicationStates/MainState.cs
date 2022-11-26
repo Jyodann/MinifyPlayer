@@ -40,12 +40,6 @@ namespace Assets.ApplicationStates
         {
             var newPinnedState = Manager.WindowManager.LoadPinnedState();
             Manager.WindowManager.PinWindowToTop(newPinnedState);
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                Debug.LogWarning("Force Token Refresh.");
-                MainManager.Instance.LoginManager.RefreshToken(false);
-            }
         }
 
         private void AttemptUpdatePlaybackState()
