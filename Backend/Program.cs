@@ -109,7 +109,7 @@ app.MapGet("/refreshtoken", (string refresh_token) =>
 
 Console.WriteLine("All Credentials found. Running server on port 7000");
 
-app.Run();
+app.Run("https://localhost:7000");
 
 #endregion
 
