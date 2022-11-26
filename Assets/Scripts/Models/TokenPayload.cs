@@ -1,6 +1,6 @@
-﻿namespace Assets.Scripts
+﻿namespace Assets.Models
 {
-    public class TokenPayload
+    internal class TokenPayload
     {
         public string code { get; set; }
 

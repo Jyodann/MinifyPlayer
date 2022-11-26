@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using Assets.Managers;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.ApplicationStates
 {
@@ -36,24 +38,19 @@ namespace Assets.ApplicationStates
             {
                 yield return new WaitForSecondsRealtime(1f);
                 TimeToAttempt -= 1;
-                Debug.Log(TimeToAttempt);
-                if (TimeToAttempt == 0)
+                if (TimeToAttempt != 0) continue;
+                using var response = Manager.GetUnityWebRequestObject("https://api.spotify.com/v1/me",
+                    MainManager.RequestMethods.GET);
+                yield return response.SendWebRequest();
+                TimeToAttempt = 5;
+                if (response.result != UnityWebRequest.Result.ConnectionError)
                 {
-                    Debug.Log("Connecting back...");
-                    using (var response = Manager.GetUnityWebRequestObject("https://api.spotify.com/v1/me", MainManager.RequestMethods.GET))
-                    {
-                        yield return response.SendWebRequest();
-                        TimeToAttempt = 5;
-                        if (response.result != UnityEngine.Networking.UnityWebRequest.Result.ConnectionError)
-                        {
-                            StateMachine.ChangeState(Manager.LoginState);
-                            yield break;
-                        }
-
-                        ConnectBack();
-                        yield break;
-                    }
+                    StateMachine.ChangeState(Manager.LoginState);
+                    yield break;
                 }
+
+                ConnectBack();
+                yield break;
             }
         }
     }

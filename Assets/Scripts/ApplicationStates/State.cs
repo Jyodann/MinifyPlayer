@@ -1,4 +1,4 @@
-﻿namespace Assets
+﻿namespace Assets.ApplicationStates
 {
     public abstract class State<T>
     {

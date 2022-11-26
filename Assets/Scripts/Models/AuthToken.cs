@@ -1,6 +1,6 @@
-﻿namespace Assets
+﻿namespace Assets.Models
 {
-    public class AuthToken
+    internal class AuthToken
     {
         public string access_token { get; set; }
 

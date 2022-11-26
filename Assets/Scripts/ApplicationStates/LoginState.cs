@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Managers;
+using UnityEngine;
 
 namespace Assets.ApplicationStates
 {
@@ -13,13 +14,12 @@ namespace Assets.ApplicationStates
             Manager.UIManager.ShowUI(UIManager.UI.Login);
             MainManager.Instance.UIManager.SetLoginErrorText(string.Empty);
             Manager.UIManager.SetVersionText($"{Application.productName} v{Application.version}");
-            if (Manager.LoginManager.GetRefreshTokenFromMemory(out var token))
-            {
-                Debug.Log(token);
-                MainManager.Instance.LoginManager.SetRefreshToken(token);
 
-                MainManager.Instance.LoginManager.RefreshToken(true);
-            }
+            if (!Manager.LoginManager.GetRefreshTokenFromMemory(out var token))
+                return;
+
+            MainManager.Instance.LoginManager.SetRefreshToken(token);
+            MainManager.Instance.LoginManager.RefreshToken(true);
         }
 
         public override void Exit()
