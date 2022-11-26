@@ -40,6 +40,12 @@ namespace Assets.ApplicationStates
         {
             var newPinnedState = Manager.WindowManager.LoadPinnedState();
             Manager.WindowManager.PinWindowToTop(newPinnedState);
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Debug.LogWarning("Force Token Refresh.");
+                MainManager.Instance.LoginManager.RefreshToken(false);
+            }
         }
 
         private void AttemptUpdatePlaybackState()
@@ -49,7 +55,7 @@ namespace Assets.ApplicationStates
 
         private IEnumerator UpdatePlaybackState()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSecondsRealtime(2f);
 
             using var request = MainManager.Instance.GetUnityWebRequestObject(
                 "https://api.spotify.com/v1/me/player/currently-playing?additional_types=episode,track",

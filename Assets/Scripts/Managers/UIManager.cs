@@ -152,11 +152,7 @@ namespace Assets.Managers
                 return;
             }
 
-            foreach (var item in AllImages)
-            {
-                print(item.name);
-                item.DOFade(0f, .3f);
-            }
+            foreach (var item in AllImages) item.DOFade(0f, .3f);
 
             VersionNumber.DOFade(0f, .3f);
             PlayPauseOverlayImage.DOFade(0f, .2f).OnComplete(() => { PlayPauseOverlay.SetActive(isEnabled); });

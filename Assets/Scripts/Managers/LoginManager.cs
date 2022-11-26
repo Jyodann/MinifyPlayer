@@ -29,7 +29,7 @@ namespace Assets.Managers
         {
             // Start with Empty Auth Token:
 #if UNITY_EDITOR
-            baseUrl = "https://localhost:7252";
+            baseUrl = "https://localhost:7000";
 #else
             baseUrl = "https://r59741kpgh.execute-api.ap-southeast-1.amazonaws.com/prod";
 #endif
@@ -64,7 +64,6 @@ namespace Assets.Managers
                 print(request.downloadHandler.text);
                 if (authToken.access_token == null)
                 {
-                    Debug.LogError("Access Token invalid");
                     MainManager.Instance.UIManager.SetLoginErrorText(
                         "Unable to verify code. Please try to login again.");
                     yield break;
