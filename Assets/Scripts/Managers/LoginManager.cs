@@ -61,7 +61,6 @@ namespace Assets.Managers
             if (request.result == UnityWebRequest.Result.Success)
             {
                 var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);
-                print(request.downloadHandler.text);
                 if (authToken.access_token == null)
                 {
                     MainManager.Instance.UIManager.SetLoginErrorText(
@@ -91,7 +90,7 @@ namespace Assets.Managers
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text);
+                var authToken = JsonConvert.DeserializeObject<AuthToken>(request.downloadHandler.text)!;
 
                 if (authToken.access_token == null)
                 {

@@ -163,11 +163,15 @@ namespace Assets.Managers
             PlayPauseButton.image.sprite = isPlaying ? PauseSprite : PlayingSprite;
         }
 
-        public void SetPlayPauseButtonVisible(bool isVisible)
+        public void SetPlaybackControlsVisible(bool isVisible)
         {
             PlayPauseButton.gameObject.SetActive(isVisible);
             NextSongButton.gameObject.SetActive(isVisible);
             PreviousSongButton.gameObject.SetActive(isVisible);
+        }
+
+        public void SetPlayOnSpotifyVisible(bool isVisible)
+        {
             ListenSpotifyButton.gameObject.SetActive(isVisible);
         }
 

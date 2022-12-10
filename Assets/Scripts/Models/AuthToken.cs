@@ -11,6 +11,7 @@
         public string scope { get; set; }
 
         public string refresh_token { get; set; }
+        
 
         public override string ToString()
         {

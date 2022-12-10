@@ -14,6 +14,11 @@ namespace Assets.ApplicationStates
     {
         private readonly PlaybackState PreviousPlaybackState = new();
         private PlaybackState CurrentPlaybackState = new();
+        private readonly User CurrentUser = new()
+        {
+            display_name = string.Empty,
+            premiumState = PremiumState.NotConfirmed
+        };
 
         public MainState(StateMachine<MainManager> SM, MainManager manager) : base(SM, manager)
         {
@@ -28,7 +33,9 @@ namespace Assets.ApplicationStates
             Manager.UIManager.SetPinnedButtonState(Manager.WindowManager.LoadPinnedState());
             Manager.WindowManager.PinWindowToTop(Manager.WindowManager.LoadPinnedState());
         }
-
+        
+        
+        
         public override void Exit()
         {
             Manager.StopAllCoroutines();
@@ -49,6 +56,7 @@ namespace Assets.ApplicationStates
 
         private IEnumerator UpdatePlaybackState()
         {
+            EnableListenOnSpotify(true);
             yield return new WaitForSecondsRealtime(2f);
 
             using var request = MainManager.Instance.GetUnityWebRequestObject(
@@ -56,7 +64,8 @@ namespace Assets.ApplicationStates
                 MainManager.RequestMethods.GET);
             yield return request.SendWebRequest();
 
-            EnablePlayPauseButton(true);
+            
+
             if (request.result == UnityWebRequest.Result.ConnectionError)
             {
                 MainManager.Instance.ApplicationState.ChangeState(MainManager.Instance.ConnectionErrorState);
@@ -67,14 +76,13 @@ namespace Assets.ApplicationStates
             {
                 if (request.downloadHandler.text == string.Empty)
                 {
+                    EnableListenOnSpotify(false);
                     Debug.LogWarning("Spotify Instance Disconnected");
-
                     Manager.UIManager.SetSongName(
                         "Spotify not currently playing. Try playing a song to resume Miniplayer!");
                     CurrentPlaybackState.CanShowOverlay = false;
                     Manager.UIManager.SetAlbumArt(UIManager.AlbumArtIcons.MusicOff);
                     AttemptUpdatePlaybackState();
-                    EnablePlayPauseButton(false);
                     yield break;
                 }
 
@@ -88,7 +96,8 @@ namespace Assets.ApplicationStates
                     switch (genericPlaybackState.currently_playing_type)
                     {
                         case "unknown":
-                            EnablePlayPauseButton(false);
+                            EnablePlaybackControls(false);
+                            EnableListenOnSpotify(false);
                             AttemptUpdatePlaybackState();
                             yield break;
                         case "track":
@@ -116,7 +125,8 @@ namespace Assets.ApplicationStates
                             break;
 
                         case "ad":
-                            EnablePlayPauseButton(false);
+                            EnablePlaybackControls(false);
+                            EnableListenOnSpotify(false);
                             CurrentPlaybackState.SongName = "Ad is playing...";
                             AttemptUpdatePlaybackState();
                             yield break;
@@ -207,9 +217,14 @@ namespace Assets.ApplicationStates
             Manager.UIManager.EnablePlayPauseOverlay(isEnabled);
         }
 
-        public void EnablePlayPauseButton(bool isEnabled)
+        public void EnablePlaybackControls(bool isEnabled)
         {
-            Manager.UIManager.SetPlayPauseButtonVisible(isEnabled);
+            Manager.UIManager.SetPlaybackControlsVisible(isEnabled);
+        }
+        
+        public void EnableListenOnSpotify(bool isEnabled)
+        {
+            Manager.UIManager.SetPlayOnSpotifyVisible(isEnabled);
         }
 
         public void Logout()
