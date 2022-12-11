@@ -46,7 +46,7 @@ Useful for people who want to see what songs are currently playing without const
 
 <br>
 
-# Technical Details 
+# Technical Details (WIP)
 
 ## Application Infrastructure 🚠
 
