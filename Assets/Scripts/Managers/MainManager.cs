@@ -8,11 +8,11 @@ namespace Assets.Managers
     {
         public enum RequestMethods
         {
-            GET,
+            Get,
 
-            POST,
+            Post,
 
-            PUT
+            Put
         }
 
         public static MainManager Instance { get; private set; }

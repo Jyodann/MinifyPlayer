@@ -40,7 +40,7 @@ namespace Assets.ApplicationStates
                 TimeToAttempt -= 1;
                 if (TimeToAttempt != 0) continue;
                 using var response = Manager.GetUnityWebRequestObject("https://api.spotify.com/v1/me",
-                    MainManager.RequestMethods.GET);
+                    MainManager.RequestMethods.Get);
                 yield return response.SendWebRequest();
                 TimeToAttempt = 5;
                 if (response.result != UnityWebRequest.Result.ConnectionError)
