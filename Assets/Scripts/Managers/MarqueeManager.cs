@@ -1,4 +1,5 @@
 using System.Collections;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace Assets.Managers
@@ -7,7 +8,7 @@ namespace Assets.Managers
     {
         [SerializeField] private GameObject SongName;
 
-        [SerializeField] private float increment = 0.1f;
+        [SerializeField] private float speed = 0.66f, lowestSpeed = 0.2f, highestSpeed = 1.25f;
 
         [SerializeField] private float pauseMarqueeDuration = 3f;
 
@@ -35,11 +36,22 @@ namespace Assets.Managers
         // Update is called once per frame
         private void Update()
         {
+            
             if (oldXDelta != songNameRect.sizeDelta.x)
             {
                 oldXDelta = songNameRect.sizeDelta.x;
                 RecalculateBounds();
             }
+        }
+
+        public void ChangeSpeedOfScrolling(int speedFromSlider)
+        {
+            // Speed coming in will be from 0 to 4
+            var percent = speedFromSlider / 4f;
+            var internalSpeedCalc = Mathf.Lerp(lowestSpeed, highestSpeed, percent);
+            Debug.Log($"[EVENT] SPEED CHANGE | RawSpeedFromSlider: {speedFromSlider} CalculatedInternalSpeed: {internalSpeedCalc}");
+            speed = internalSpeedCalc;
+            RecalculateBounds();
         }
 
         public void RecalculateBounds()
@@ -56,9 +68,13 @@ namespace Assets.Managers
             }
 
             // If song does not fit, start Marquee
-            startingPos = new Vector3(songNameRect.sizeDelta.x / 2, songNameRect.localPosition.y, 0);
-            endingPos = new Vector3(-(songNameRect.sizeDelta.x / 2), songNameRect.localPosition.y, 0);
-            songNameRect.localPosition = startingPos;
+            var sizeDelta = songNameRect.sizeDelta;
+            var localPosition = songNameRect.localPosition;
+            
+            startingPos = new Vector3(sizeDelta.x / 2, localPosition.y, 0);
+            endingPos = new Vector3(-(sizeDelta.x / 2), localPosition.y, 0);
+            localPosition = startingPos;
+            songNameRect.localPosition = localPosition;
 
             switch (marqueeStyle)
             {
@@ -74,7 +90,7 @@ namespace Assets.Managers
 
         private IEnumerator StartRollOverMarquee()
         {
-            var currentIncrement = increment;
+            var currentIncrement = speed;
             yield return new WaitForSeconds(pauseMarqueeDuration);
             var offset = rollOverWidth;
             SongNameClone = Instantiate(SongName, SongName.transform.position, Quaternion.identity,
@@ -107,20 +123,19 @@ namespace Assets.Managers
                 songNameRect.localPosition += new Vector3(-currentIncrement, 0, 0);
                 cloneRect.localPosition += new Vector3(-currentIncrement, 0, 0);
                 yield return new WaitForFixedUpdate();
-                yield return null;
             }
         }
 
         private IEnumerator MarqueeText()
         {
-            var currentIncrement = increment;
+            var currentIncrement = speed;
             yield return new WaitForSeconds(pauseMarqueeDuration);
             while (true)
             {
                 var isEnd = songNameRect.localPosition.x - endingPos.x < 0;
                 var isBeginning = startingPos.x - songNameRect.localPosition.x < 0;
                 var isAnimating = !isBeginning && !isEnd;
-                print($"IsBegin: {isBeginning} isEnd: {isEnd} isAnimating: {isAnimating} Increment: {increment}");
+                print($"IsBegin: {isBeginning} isEnd: {isEnd} isAnimating: {isAnimating} Increment: {speed}");
 
                 if (isAnimating)
                 {

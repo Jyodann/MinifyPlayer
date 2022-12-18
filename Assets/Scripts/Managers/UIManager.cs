@@ -203,6 +203,7 @@ namespace Assets.Managers
         public void ApplySpeedChange()
         {
             Debug.Log(ScrollSpeedSlider.value);
+            MainManager.Instance.MarqueeManager.ChangeSpeedOfScrolling((int)ScrollSpeedSlider.value);
         }
     }
 }
