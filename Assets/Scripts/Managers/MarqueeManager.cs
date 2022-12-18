@@ -42,7 +42,7 @@ namespace Assets.Managers
             }
         }
 
-        private void RecalculateBounds()
+        public void RecalculateBounds()
         {
             StopAllCoroutines();
             Destroy(SongNameClone);

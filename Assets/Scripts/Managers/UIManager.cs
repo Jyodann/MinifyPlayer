@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -5,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.Windows.Speech;
 
 namespace Assets.Managers
 {
@@ -46,6 +48,8 @@ namespace Assets.Managers
         [SerializeField] private Sprite PlayingSprite, PauseSprite, PinnedSprite, UnpinnedSprite;
 
         [SerializeField] private Texture2D MusicOn, MusicOff, Search;
+
+        [SerializeField] private Slider ScrollSpeedSlider;
 
         private readonly List<Image> AllImages = new();
 
@@ -193,6 +197,12 @@ namespace Assets.Managers
         public void EmptyMinifyCodeText()
         {
             TokenInputUI.text = string.Empty;
+        }
+
+        
+        public void ApplySpeedChange()
+        {
+            Debug.Log(ScrollSpeedSlider.value);
         }
     }
 }
