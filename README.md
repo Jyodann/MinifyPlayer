@@ -1,5 +1,15 @@
 # Minify 🎵🎶
 
+# Deprecation Notice
+
+Hi! Thanks for checking Minify out, unfortunately, due to OS-related Windowing Issues, I have moved development to a successor, Bittify.
+
+[Check it out here!](https://github.com/Jyodann/Bittify)
+
+Online services for Minify have currently been ceased, and the code here is meant for archival purposes. 
+
+I hope you understand, and thank you for your continued support!
+
 ## About 🐳
 ![image](https://user-images.githubusercontent.com/48559311/206890530-882078c0-647a-46c8-8331-b1b0445148fb.png)
 
